@@ -36,56 +36,62 @@ struct PokemonApiResults: Identifiable, Codable {
 struct PokemonDetailApi: Decodable {
     var name: String
     var order: Int
+    var species: PokemonSpecies
     var sprites: PokemonSprites
     
     enum CodingKeys: String, CodingKey {
-        case name, order, sprites
+        case name, order, sprites, species
     }
-}
-
-struct PokemonSprites: Decodable {
-    var back_default: String
-    var front_default: String
 }
 
 struct HomeScreen: View {
     @State private var pokemonList: [PokemonList] = []
+    @State var inputText: String = ""
+    @State private var isShowingDetailView = false
     
     var body: some View {
+        NavigationView {
         ZStack {
-            
-            Image("backgroundTest")
-                .resizable()
-                .scaledToFill()
-                .ignoresSafeArea()
-            
-         LazyVGrid(columns: [
-            GridItem(.fixed(80)),
-            GridItem(.fixed(80)),
-            GridItem(.fixed(80)),
-            GridItem(.fixed(80))
-         ], spacing: 12, content: {
-             ForEach(pokemonList) { poke in
-                 VStack {
-                     Spacer()
-                     
-                     AsyncImage(url: URL(string: poke.front_sprite))
-                         .frame(width: 32.0, height: 32.0)
-                     
-                     Text("\(poke.order)")
-                         .font(.system(size: 6))
-                         .padding(.top, 10)
-                     
-                     Text("\(poke.name)")
-                         .font(.system(size: 8))
-                     
-                     Spacer()
-                 }
-                 .padding()
-                // .background(Color.red)
-             }
-         })
-            
+                Image("backgroundTest")
+                    .resizable()
+                    .scaledToFill()
+                    .ignoresSafeArea()
+                
+                VStack {
+                    // TextField("Enter Pokémon name", text: $inputText)
+                    //     .padding(.leading, 30)
+                    
+                    LazyVGrid(columns: [
+                        GridItem(.fixed(80)),
+                        GridItem(.fixed(80)),
+                        GridItem(.fixed(80)),
+                        GridItem(.fixed(80))
+                    ], spacing: 12, content: {
+                        ForEach(pokemonList) { poke in
+                            NavigationLink {
+                                PokemonDetailScreen(pokemonName: poke.name)
+                            } label: {
+                                VStack {
+                                    Spacer()
+                                    
+                                    AsyncImage(url: URL(string: poke.front_sprite))
+                                        .frame(width: 32.0, height: 32.0)
+                                    
+                                    Text("\(poke.order)")
+                                        .font(.system(size: 6))
+                                        .padding(.top, 10)
+                                    
+                                    Text("\(poke.name)")
+                                        .font(.system(size: 8))
+                                    
+                                    Spacer()
+                                }
+                                .padding()
+                            }
+                        }
+                    })
+                }
+            }
         }.onAppear(){
             getPokemonsFromAPI()
         }
