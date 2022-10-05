@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "800px-Poké_Ball_icon.svg.png",
+      "filename" : "search-svgrepo-com.svg",
       "idiom" : "universal",
       "scale" : "1x"
     },
@@ -17,5 +17,8 @@
   "info" : {
     "author" : "xcode",
     "version" : 1
+  },
+  "properties" : {
+    "template-rendering-intent" : "template"
   }
 }

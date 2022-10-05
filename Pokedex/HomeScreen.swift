@@ -51,13 +51,29 @@ struct HomeScreen: View {
     var body: some View {
         NavigationView {
             ZStack(alignment: .top) {
-            Image("backgroundTest")
-                .resizable()
-                .scaledToFill()
-                .ignoresSafeArea()
-            
+                if(pokemonList.isEmpty){
+                    Spacer()
+                    Text("Pokémon no encontrado").background(Color.white)
+                    Spacer()
+                }
+                
                 VStack {
                     
+                    HStack {
+                        Image("ic_left_arrow").resizable().frame(width: 30, height: 30)
+                            .padding(.leading, 10)
+                        
+                        Text("BOX 1")
+                            .frame(maxWidth: .infinity, maxHeight: 30)
+                            .background(Rectangle().fill(Color.white).cornerRadius(4))
+                            .padding(.trailing, 10)
+                            .padding(.leading, 10)
+                        
+                        Image("ic_right_arrow").resizable().frame(width: 30, height: 30)
+                            .padding(.trailing, 10)
+                    }
+
+                    /*
                     HStack {
                         Image(systemName: "magnifyingglass").padding(.leading, 20)
                         TextField("Search...", text: $searchedPokemon, onCommit: {
@@ -71,60 +87,65 @@ struct HomeScreen: View {
                     }
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .padding(.bottom, 20)
+                     */
                     
-                    if(pokemonList.isEmpty){
-                        Spacer()
-                        Text("Pokémon no encontrado").background(Color.white)
-                        Spacer()
+                    ScrollView {
+                        LazyVGrid(columns: [
+                            GridItem(.fixed(100)),
+                            GridItem(.fixed(100)),
+                            GridItem(.fixed(100))
+                        ], spacing: 4, content: {
+                            ForEach(pokemonList) { poke in
+                                NavigationLink {
+                                    PokemonDetailScreen(pokemonName: poke.name)
+                                } label: {
+                                    VStack {
+                                        AsyncImage(url: URL(string: poke.sprite), transaction: .init(animation: .spring(response: 1.6))) { phase in
+                                            switch phase {
+                                            case .empty:
+                                                ProgressView()
+                                                    .progressViewStyle(.circular)
+                                            case .success(let image):
+                                                image
+                                                    .resizable()
+                                                    .aspectRatio(contentMode: .fill)
+                                            case .failure:
+                                                Text("Failed fetching image. Make sure to check your data connection and try again.")
+                                                    .foregroundColor(.red)
+                                            @unknown default:
+                                                Text("Unknown error. Please try again.")
+                                                    .foregroundColor(.red)
+                                            }
+                                        }
+                                        .frame(height: 80)
+                                        /*
+                                        .overlay(
+                                            Image("ic_cursor")
+                                                .resizable()
+                                                  .frame(width: 20.0, height: 20.0)
+                                            ,alignment: .bottomTrailing)
+                                         */
+                                    }
+                                    .padding()
+                                    .overlay(
+                                        Text("\(poke.order) \(poke.name)")
+                                            .font(.system(size: 14))
+                                        ,alignment: .bottom)
+                                }
+                            }
+                        })
                     }
                     
-                    LazyVGrid(columns: [
-                        GridItem(.fixed(80)),
-                        GridItem(.fixed(80)),
-                        GridItem(.fixed(80)),
-                        GridItem(.fixed(80))
-                    ], spacing: 12, content: {
-                        ForEach(pokemonList) { poke in
-                            NavigationLink {
-                                PokemonDetailScreen(pokemonName: poke.name)
-                            } label: {
-                                VStack {
-                                    Spacer()
-                                    
-                                    AsyncImage(url: URL(string: poke.sprite), transaction: .init(animation: .spring(response: 1.6))) { phase in
-                                        switch phase {
-                                        case .empty:
-                                            ProgressView()
-                                                .progressViewStyle(.circular)
-                                        case .success(let image):
-                                            image
-                                                .resizable()
-                                                .aspectRatio(contentMode: .fill)
-                                        case .failure:
-                                            Text("Failed fetching image. Make sure to check your data connection and try again.")
-                                                .foregroundColor(.red)
-                                        @unknown default:
-                                            Text("Unknown error. Please try again.")
-                                                .foregroundColor(.red)
-                                        }
-                                    }
-                                    .frame(height: 30)
-                                    
-                                    Text("\(poke.order)")
-                                        .font(.system(size: 10))
-                                        .padding(.top, 10)
-                                    
-                                    Text("\(poke.name)")
-                                        .font(.system(size: 14))
-                                    
-                                    Spacer()
-                                }
-                                .padding()
-                            }
-                        }
-                    })
+                    HStack {
+                        Image("ic_search").resizable().frame(width: 50, height: 50).padding(.leading, 20).foregroundColor(.white)
+                        Image("ic_team").resizable().frame(width: 50, height: 50).padding(.leading, 10).foregroundColor(.white)
+                        Spacer()
+                        // Image("ic_ok").resizable().frame(width: 50, height: 50).padding(.trailing, 20).foregroundColor(.white)
+                    }
                 }
             }
+            .navigationBarTitle("Home", displayMode: .inline)
+            .background(LinearGradient(gradient: Gradient(colors: [Color("startBackgroundGradient"), Color("endBackgroundGradient")]), startPoint: .top, endPoint: .bottom))
         }.onAppear(){
             getPokemonsFromAPI()
         }
@@ -132,7 +153,7 @@ struct HomeScreen: View {
         
     
     private func getPokemonsFromAPI(){
-        guard let url = URL(string: "https://pokeapi.co/api/v2/pokemon?limit=15&offset=0") else { fatalError("Missing URL") }
+        guard let url = URL(string: "https://pokeapi.co/api/v2/pokemon?limit=13&offset=0") else { fatalError("Missing URL") }
         
         let urlRequest = URLRequest(url: url)
         
