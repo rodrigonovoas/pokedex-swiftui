@@ -8,7 +8,7 @@ For that, I have thought in a path like this one to cover the creation of the en
 
 THE FIST MOCKUP
 
-1) [x] Choose a correct API to retrieve pokémon data (DONE: https://pokeapi.co, probably the most used pokemon API)
+1) [x] Choose a correct API to retrieve pokémon data (https://pokeapi.co should be enough)
 2) [x] Create a simple screen to retrieve data from API and print it as a grid table
 3) [x] Create a simple detail screen to navigate between the main screen (pokemon list) and this one (pokemon detail)
 4) [x]Mockup done! Now, start applying good practises as good as posible: naming conventions, OOP, repository pattern, follow MVVM architecture to manage data correctly...
