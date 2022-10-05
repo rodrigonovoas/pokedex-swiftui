@@ -12,31 +12,22 @@ struct PokemonSpecies: Decodable {
     var url: String
 }
 
-struct PokemonBlackWhite: Decodable {
-    var back_default: String
+struct PokemonOfficialArtwork: Decodable {
     var front_default: String
 }
 
-struct PokemonGenerationV: Decodable {
-    var blackWhite: PokemonBlackWhite
+struct PokemonOther: Decodable {
+    var officialArtwork: PokemonOfficialArtwork
     
     enum CodingKeys: String, CodingKey {
-        case blackWhite = "black-white"
-    }
-}
-
-struct PokemonVersions: Decodable {
-    var generationV: PokemonGenerationV
-    
-    enum CodingKeys: String, CodingKey {
-        case generationV = "generation-v"
+        case officialArtwork = "official-artwork"
     }
 }
 
 struct PokemonSprites: Decodable {
     var back_default: String
     var front_default: String
-    var versions: PokemonVersions
+    var other: PokemonOther
 }
 
 struct PokemonSpecie: Decodable {

@@ -66,8 +66,8 @@ struct PokemonDetailScreen: View {
                         
                         getPokemonDescriptionFromPokedex(endpoint: pokemonDetail.species.url)
                         
-                        frontImage = pokemonDetail.sprites.versions.generationV.blackWhite.front_default
-                        backImage = pokemonDetail.sprites.versions.generationV.blackWhite.back_default
+                        frontImage = pokemonDetail.sprites.front_default
+                        backImage = pokemonDetail.sprites.back_default
                     } catch let error {
                         print("Error decoding: ", error)
                     }

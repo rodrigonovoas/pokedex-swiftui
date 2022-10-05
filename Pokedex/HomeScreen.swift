@@ -12,8 +12,7 @@ struct PokemonList: Identifiable {
     var id = UUID()
     var name: String
     var order: Int
-    var front_sprite: String
-    var back_sprite: String
+    var sprite: String
 }
 
 struct PokemonApiList: Decodable {
@@ -46,20 +45,38 @@ struct PokemonDetailApi: Decodable {
 
 struct HomeScreen: View {
     @State private var pokemonList: [PokemonList] = []
-    @State var inputText: String = ""
+    @State var searchedPokemon: String = ""
     @State private var isShowingDetailView = false
     
     var body: some View {
         NavigationView {
-        ZStack {
-                Image("backgroundTest")
-                    .resizable()
-                    .scaledToFill()
-                    .ignoresSafeArea()
-                
+            ZStack(alignment: .top) {
+            Image("backgroundTest")
+                .resizable()
+                .scaledToFill()
+                .ignoresSafeArea()
+            
                 VStack {
-                    // TextField("Enter Pokémon name", text: $inputText)
-                    //     .padding(.leading, 30)
+                    
+                    HStack {
+                        Image(systemName: "magnifyingglass").padding(.leading, 20)
+                        TextField("Search...", text: $searchedPokemon, onCommit: {
+                            pokemonList.removeAll()
+                            if(searchedPokemon.isEmpty){
+                                getPokemonsFromAPI()
+                            }else{
+                                getPokemonByName(pokemon: searchedPokemon.lowercased())
+                            }
+                        }).padding(.trailing, 20)
+                    }
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .padding(.bottom, 20)
+                    
+                    if(pokemonList.isEmpty){
+                        Spacer()
+                        Text("Pokémon no encontrado").background(Color.white)
+                        Spacer()
+                    }
                     
                     LazyVGrid(columns: [
                         GridItem(.fixed(80)),
@@ -74,15 +91,31 @@ struct HomeScreen: View {
                                 VStack {
                                     Spacer()
                                     
-                                    AsyncImage(url: URL(string: poke.front_sprite))
-                                        .frame(width: 32.0, height: 32.0)
+                                    AsyncImage(url: URL(string: poke.sprite), transaction: .init(animation: .spring(response: 1.6))) { phase in
+                                        switch phase {
+                                        case .empty:
+                                            ProgressView()
+                                                .progressViewStyle(.circular)
+                                        case .success(let image):
+                                            image
+                                                .resizable()
+                                                .aspectRatio(contentMode: .fill)
+                                        case .failure:
+                                            Text("Failed fetching image. Make sure to check your data connection and try again.")
+                                                .foregroundColor(.red)
+                                        @unknown default:
+                                            Text("Unknown error. Please try again.")
+                                                .foregroundColor(.red)
+                                        }
+                                    }
+                                    .frame(height: 30)
                                     
                                     Text("\(poke.order)")
-                                        .font(.system(size: 6))
+                                        .font(.system(size: 10))
                                         .padding(.top, 10)
                                     
                                     Text("\(poke.name)")
-                                        .font(.system(size: 8))
+                                        .font(.system(size: 14))
                                     
                                     Spacer()
                                 }
@@ -96,6 +129,7 @@ struct HomeScreen: View {
             getPokemonsFromAPI()
         }
     }
+        
     
     private func getPokemonsFromAPI(){
         guard let url = URL(string: "https://pokeapi.co/api/v2/pokemon?limit=15&offset=0") else { fatalError("Missing URL") }
@@ -118,7 +152,7 @@ struct HomeScreen: View {
                         let pokemonsList = decodedPokes.results!
                         
                         for i in 1...pokemonsList.count - 1 {
-                            getPokemonDetailFromAPI(pokemon: pokemonsList[i].name)
+                            getPokemonByName(pokemon: pokemonsList[i].name)
                         }
                     } catch let error {
                         print("Error decoding: ", error)
@@ -130,7 +164,7 @@ struct HomeScreen: View {
         dataTask.resume()
     }
     
-    private func getPokemonDetailFromAPI(pokemon: String){
+    private func getPokemonByName(pokemon: String){
         guard let url = URL(string: "https://pokeapi.co/api/v2/pokemon/\(pokemon)") else { fatalError("Missing URL") }
         
         let urlRequest = URLRequest(url: url)
@@ -142,13 +176,14 @@ struct HomeScreen: View {
             }
             
             guard let response = response as? HTTPURLResponse else { return }
-            
+
             if response.statusCode == 200 {
                 guard let data = data else { return }
                 DispatchQueue.main.async {
                     do {
+                        print("DEBUG-- pokemon downlaoded")
                         let pokemonDetail = try JSONDecoder().decode(PokemonDetailApi.self, from: data)
-                        pokemonList.append(PokemonList(name: pokemonDetail.name, order: pokemonDetail.order, front_sprite: pokemonDetail.sprites.front_default, back_sprite: pokemonDetail.sprites.back_default))
+                        pokemonList.append(PokemonList(name: pokemonDetail.name, order: pokemonDetail.order, sprite: pokemonDetail.sprites.other.officialArtwork.front_default))
                         print(pokemonDetail)
                     } catch let error {
                         print("Error decoding: ", error)
@@ -160,11 +195,3 @@ struct HomeScreen: View {
         dataTask.resume()
     }
 }
-
-/*
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
-    }
-}
- */
