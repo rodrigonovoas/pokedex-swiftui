@@ -1,13 +1,19 @@
-# Overview
+### Overview
 
 The main goal of this project is to create a simple Pokedex app with basic functions such as searching pokemons by name and generation, and see their  details (types, abilities, stats...) in another screen, so that the user has the possibility to navigate between the search Screen and the Detail screen.
 
+### Roadmap
+
 For that, I have thought in a path like this one to cover the creation of the entire application:
+
+THE FIST MOCKUP
 
 1) Choose a correct API to retrieve pokémon data (DONE: https://pokeapi.co, probably the most used pokemon API)
 2) Create a simple screen to retrieve data from API and print it as a grid table
 3) Create a simple detail screen to navigate between the main screen (pokemon list) and this one (pokemon detail)
 4) Mockup done! Now, start applying good practises as good as posible: naming conventions, OOP, repository pattern, follow MVVM architecture to manage data correctly...
+
+THE SEARCH SCREEN
 
 ![image](https://user-images.githubusercontent.com/49367885/194107673-5f177ad7-9b53-4354-bffd-875584480fd0.png)
 
