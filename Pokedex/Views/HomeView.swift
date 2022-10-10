@@ -7,53 +7,16 @@
 
 import SwiftUI
 
-
-struct PokemonList: Identifiable {
-    var id = UUID()
-    var name: String
-    var order: Int
-    var sprite: String
-}
-
-struct PokemonApiList: Decodable {
-    var count: Int
-    var next: String?
-    var previous: String?
-    var results: [PokemonApiResults]?
-}
-
-struct PokemonApiResults: Identifiable, Codable {
-    var id = UUID()
-    var name: String
-    var url: String
-    
-    enum CodingKeys: String, CodingKey {
-        case name, url
-    }
-}
-
-struct PokemonDetailApi: Decodable {
-    var name: String
-    var order: Int
-    var species: PokemonSpecies
-    var sprites: PokemonSprites
-    
-    enum CodingKeys: String, CodingKey {
-        case name, order, sprites, species
-    }
-}
-
-struct HomeScreen: View {
-    @State private var pokemonList: [PokemonList] = []
+struct HomeView: View {
+    @State private var pokemonList: [PokemonDetailResponse] = []
     @State var searchedPokemon: String = ""
-    @State private var isShowingDetailView = false
     
     var body: some View {
         NavigationView {
             ZStack(alignment: .top) {
                 if(pokemonList.isEmpty){
                     Spacer()
-                    Text("Pokémon no encontrado").background(Color.white)
+                    Text("Pokémon not found").background(Color.white)
                     Spacer()
                 }
                 
@@ -97,10 +60,10 @@ struct HomeScreen: View {
                         ], spacing: 4, content: {
                             ForEach(pokemonList) { poke in
                                 NavigationLink {
-                                    PokemonDetailScreen(pokemonName: poke.name)
+                                    DetailView(pokemon: poke)
                                 } label: {
                                     VStack {
-                                        AsyncImage(url: URL(string: poke.sprite), transaction: .init(animation: .spring(response: 1.6))) { phase in
+                                        AsyncImage(url: URL(string: poke.sprites.other.officialArtwork.front_default), transaction: .init(animation: .spring(response: 1.6))) { phase in
                                             switch phase {
                                             case .empty:
                                                 ProgressView()
@@ -169,11 +132,11 @@ struct HomeScreen: View {
                 guard let data = data else { return }
                 DispatchQueue.main.async {
                     do {
-                        let decodedPokes = try JSONDecoder().decode(PokemonApiList.self, from: data)
+                        let decodedPokes = try JSONDecoder().decode(PokemonListResponse.self, from: data)
                         let pokemonsList = decodedPokes.results!
                         
                         for i in 1...pokemonsList.count - 1 {
-                            getPokemonByName(pokemon: pokemonsList[i].name)
+                            getPokemonDetailByNameFromAPI(pokemon: pokemonsList[i].name)
                         }
                     } catch let error {
                         print("Error decoding: ", error)
@@ -185,7 +148,7 @@ struct HomeScreen: View {
         dataTask.resume()
     }
     
-    private func getPokemonByName(pokemon: String){
+    private func getPokemonDetailByNameFromAPI(pokemon: String){
         guard let url = URL(string: "https://pokeapi.co/api/v2/pokemon/\(pokemon)") else { fatalError("Missing URL") }
         
         let urlRequest = URLRequest(url: url)
@@ -203,8 +166,8 @@ struct HomeScreen: View {
                 DispatchQueue.main.async {
                     do {
                         print("DEBUG-- pokemon downlaoded")
-                        let pokemonDetail = try JSONDecoder().decode(PokemonDetailApi.self, from: data)
-                        pokemonList.append(PokemonList(name: pokemonDetail.name, order: pokemonDetail.order, sprite: pokemonDetail.sprites.other.officialArtwork.front_default))
+                        let pokemonDetail = try JSONDecoder().decode(PokemonDetailResponse.self, from: data)
+                        pokemonList.append(pokemonDetail)
                         print(pokemonDetail)
                     } catch let error {
                         print("Error decoding: ", error)

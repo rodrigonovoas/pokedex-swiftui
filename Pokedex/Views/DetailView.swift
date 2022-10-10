@@ -7,26 +7,22 @@
 
 import SwiftUI
 
-struct PokemonDetailScreen: View {
-    var pokemonName: String
-    
-    @State var name: String = ""
-    @State var description: String = ""
-    @State var frontImage: String = ""
-    @State var backImage: String = ""
+struct DetailView: View {
+    @State var pokemon: PokemonDetailResponse
+    @State var description = ""
     
     var body: some View {
         ZStack {
             VStack {
                 HStack {
-                    AsyncImage(url: URL(string: frontImage))
+                    AsyncImage(url: URL(string: pokemon.sprites.front_default))
                         .frame(width: 100.0, height: 100.0)
                     
-                    AsyncImage(url: URL(string: backImage))
+                    AsyncImage(url: URL(string: pokemon.sprites.back_default))
                         .frame(width: 100.0, height: 100.0)
                 }
                 
-                Text(name).font(.system(size: 22)).bold()
+                Text(pokemon.name).font(.system(size: 22)).bold()
                 
                 Text(description)
                     .padding(.top, 20)
@@ -34,7 +30,7 @@ struct PokemonDetailScreen: View {
                     .padding(.leading, 20)
             }
         }.onAppear(){
-            getPokemonDetailFromApi()
+            getPokemonDescriptionFromAPI(endpoint: pokemon.species.url)
         }
     }
     
@@ -43,42 +39,7 @@ struct PokemonDetailScreen: View {
         return descriptionFormatted.replacingOccurrences(of: "\u{0C}", with: " ")
     }
     
-    private func getPokemonDetailFromApi(){
-        guard let url = URL(string: "https://pokeapi.co/api/v2/pokemon/\(pokemonName)") else { fatalError("Missing URL") }
-        
-        let urlRequest = URLRequest(url: url)
-        
-        let dataTask = URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
-            if let error = error {
-                print("Request error: ", error)
-                return
-            }
-            
-            guard let response = response as? HTTPURLResponse else { return }
-            
-            if response.statusCode == 200 {
-                guard let data = data else { return }
-                DispatchQueue.main.async {
-                    do {
-                        let pokemonDetail = try JSONDecoder().decode(PokemonDetailApi.self, from: data)
-                        self.name = pokemonDetail.name
-                        print(pokemonDetail)
-                        
-                        getPokemonDescriptionFromPokedex(endpoint: pokemonDetail.species.url)
-                        
-                        frontImage = pokemonDetail.sprites.front_default
-                        backImage = pokemonDetail.sprites.back_default
-                    } catch let error {
-                        print("Error decoding: ", error)
-                    }
-                }
-            }
-        }
-        
-        dataTask.resume()
-    }
-    
-    private func getPokemonDescriptionFromPokedex(endpoint: String){
+    private func getPokemonDescriptionFromAPI(endpoint: String){
         guard let url = URL(string: endpoint) else { fatalError("Missing URL") }
         
         let urlRequest = URLRequest(url: url)
@@ -95,7 +56,7 @@ struct PokemonDetailScreen: View {
                 guard let data = data else { return }
                 DispatchQueue.main.async {
                     do {
-                        let pokemonSpecieDetail = try JSONDecoder().decode(PokemonSpecie.self, from: data)
+                        let pokemonSpecieDetail = try JSONDecoder().decode(PokemonSpecieResponse.self, from: data)
                         self.description = removeSpacesFromText(description: pokemonSpecieDetail.flavor_text_entries[0].flavor_text)
                         print(pokemonSpecieDetail)
                     } catch let error {
