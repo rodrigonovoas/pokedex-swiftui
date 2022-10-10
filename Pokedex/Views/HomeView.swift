@@ -8,13 +8,13 @@
 import SwiftUI
 
 struct HomeView: View {
-    @State private var pokemonList: [PokemonDetailResponse] = []
-    @State var searchedPokemon: String = ""
+    @ObservedObject private var viewModel: HomeViewModel
+    @State var searchedPokemon: String
     
     var body: some View {
         NavigationView {
             ZStack(alignment: .top) {
-                if(pokemonList.isEmpty){
+                if(viewModel.pokemonList.isEmpty){
                     Spacer()
                     Text("Pokémon not found").background(Color.white)
                     Spacer()
@@ -58,7 +58,7 @@ struct HomeView: View {
                             GridItem(.fixed(100)),
                             GridItem(.fixed(100))
                         ], spacing: 4, content: {
-                            ForEach(pokemonList) { poke in
+                            ForEach(viewModel.pokemonList) { poke in
                                 NavigationLink {
                                     DetailView(pokemon: poke)
                                 } label: {
@@ -110,72 +110,12 @@ struct HomeView: View {
             .navigationBarTitle("Home", displayMode: .inline)
             .background(LinearGradient(gradient: Gradient(colors: [Color("startBackgroundGradient"), Color("endBackgroundGradient")]), startPoint: .top, endPoint: .bottom))
         }.onAppear(){
-            getPokemonsFromAPI()
+            viewModel.getPokemonsFromAPI()
         }
     }
-        
     
-    private func getPokemonsFromAPI(){
-        guard let url = URL(string: "https://pokeapi.co/api/v2/pokemon?limit=13&offset=0") else { fatalError("Missing URL") }
-        
-        let urlRequest = URLRequest(url: url)
-        
-        let dataTask = URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
-            if let error = error {
-                print("Request error: ", error)
-                return
-            }
-            
-            guard let response = response as? HTTPURLResponse else { return }
-            
-            if response.statusCode == 200 {
-                guard let data = data else { return }
-                DispatchQueue.main.async {
-                    do {
-                        let decodedPokes = try JSONDecoder().decode(PokemonListResponse.self, from: data)
-                        let pokemonsList = decodedPokes.results!
-                        
-                        for i in 1...pokemonsList.count - 1 {
-                            getPokemonDetailByNameFromAPI(pokemon: pokemonsList[i].name)
-                        }
-                    } catch let error {
-                        print("Error decoding: ", error)
-                    }
-                }
-            }
-        }
-        
-        dataTask.resume()
-    }
-    
-    private func getPokemonDetailByNameFromAPI(pokemon: String){
-        guard let url = URL(string: "https://pokeapi.co/api/v2/pokemon/\(pokemon)") else { fatalError("Missing URL") }
-        
-        let urlRequest = URLRequest(url: url)
-        
-        let dataTask = URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
-            if let error = error {
-                print("Request error: ", error)
-                return
-            }
-            
-            guard let response = response as? HTTPURLResponse else { return }
-
-            if response.statusCode == 200 {
-                guard let data = data else { return }
-                DispatchQueue.main.async {
-                    do {
-                        print("DEBUG-- pokemon downlaoded")
-                        let pokemonDetail = try JSONDecoder().decode(PokemonDetailResponse.self, from: data)
-                        pokemonList.append(pokemonDetail)
-                        print(pokemonDetail)
-                    } catch let error {
-                        print("Error decoding: ", error)
-                    }
-                }
-            }
-        }
-        
-        dataTask.resume()
+    init() {
+        searchedPokemon = ""
+        viewModel = HomeViewModel()
     }
 }
