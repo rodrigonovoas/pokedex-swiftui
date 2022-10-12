@@ -12,7 +12,7 @@ public class HomeViewModel: ObservableObject {
     private var repository: PokeApiRepositoryProtocol
     
     init() {
-        repository = PokeApiRepository(session: URLSession.shared, baseURL: "https://pokeapi.co/api/v2")
+        repository = PokeApiRepository(session: URLSession.shared)
     }
     
     func getPokemonsFromAPI(){

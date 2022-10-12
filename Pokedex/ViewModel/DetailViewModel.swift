@@ -9,35 +9,18 @@ import Foundation
 
 public class DetailViewModel: ObservableObject  {
     @Published var description = ""
-    var textUtils: TextUtils = TextUtils()
+    private var repository: PokeApiRepositoryProtocol
+    private var textUtils: TextUtils = TextUtils()
+    
+    init(){
+        repository = PokeApiRepository(session: URLSession.shared)
+    }
     
     func getPokemonDescriptionFromAPI(endpoint: String) {
-        guard let url = URL(string: endpoint) else { fatalError("Missing URL") }
-        
-        let urlRequest = URLRequest(url: url)
-        
-        let dataTask = URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
-            if let error = error {
-                print("Request error: ", error)
-                return
+        repository.getPokemonDescriptionFromAPI(endpoint: endpoint, pokemonDescriptionCompletitionHandler: { pokemonSpecieResponse, error in
+            if let pokemonSpecieResponse = pokemonSpecieResponse {
+                self.description = self.textUtils.removeSpacesFromText(description: pokemonSpecieResponse.flavor_text_entries[0].flavor_text)
             }
-            
-            guard let response = response as? HTTPURLResponse else { return }
-            
-            if response.statusCode == 200 {
-                guard let data = data else { return }
-                DispatchQueue.main.async {
-                    do {
-                        let pokemonSpecieDetail = try JSONDecoder().decode(PokemonSpecieResponse.self, from: data)
-                        self.description = self.textUtils.removeSpacesFromText(description: pokemonSpecieDetail.flavor_text_entries[0].flavor_text)
-                        print(pokemonSpecieDetail)
-                    } catch let error {
-                        print("Error decoding: ", error)
-                    }
-                }
-            }
-        }
-        
-        dataTask.resume()
+        })
     }
 }

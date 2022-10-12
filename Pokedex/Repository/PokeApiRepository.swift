@@ -8,25 +8,17 @@
 import Foundation
 import Combine
 
-protocol PokeApiRepositoryProtocol {
-    func getPokemonsFromAPI(pokemonCompletitionHandler: @escaping (PokemonDetailResponse?, Error?) -> Void)
-    func getPokemonDetailByNameFromAPI(pokemon: String, pokemonDetailCompletitionHandler: @escaping (PokemonDetailResponse?, Error?) -> Void)
-}
-
-// MARK: - Implemetation
-
 struct PokeApiRepository: PokeApiRepositoryProtocol {
+    private let baseURL: String = "https://pokeapi.co/api/v2"
     let session: URLSession
-    let baseURL: String
     let bgQueue = DispatchQueue(label: "bg_parse_queue")
     
-    init(session: URLSession, baseURL: String) {
+    init(session: URLSession) {
         self.session = session
-        self.baseURL = baseURL
     }
     
     func getPokemonsFromAPI(pokemonCompletitionHandler: @escaping (PokemonDetailResponse?, Error?) -> Void) {
-        guard let url = URL(string: baseURL + "/pokemon?limit=13&offset=0") else { fatalError("Missing URL") }
+        guard let url = URL(string: baseURL + PokeApiEndpoints.pokemonList.rawValue + "?limit=13&offset=0") else { fatalError("Missing URL") }
         
         let urlRequest = URLRequest(url: url)
         
@@ -64,7 +56,7 @@ struct PokeApiRepository: PokeApiRepositoryProtocol {
     }
 
     func getPokemonDetailByNameFromAPI(pokemon: String, pokemonDetailCompletitionHandler: @escaping (PokemonDetailResponse?, Error?) -> Void) {
-        guard let url = URL(string: baseURL + "/pokemon/\(pokemon)") else { fatalError("Missing URL") }
+        guard let url = URL(string: baseURL + PokeApiEndpoints.pokemonDetail.rawValue + "\(pokemon)") else { fatalError("Missing URL") }
         
         let urlRequest = URLRequest(url: url)
         
@@ -92,19 +84,34 @@ struct PokeApiRepository: PokeApiRepositoryProtocol {
         
         dataTask.resume()
     }
-}
-
-
-// MARK: - API
-/*
-extension RealCountriesWebRepository {
-    enum API: APICall {
-        case allCountries
-        case countryDetails(Country)
+    
+    func getPokemonDescriptionFromAPI(endpoint: String, pokemonDescriptionCompletitionHandler: @escaping (PokemonSpecieResponse?, Error?) -> Void) {
+        guard let url = URL(string: endpoint) else { fatalError("Missing URL") }
         
-        var path: String { ... }
-        var httpMethod: String { ... }
-        var headers: [String: String]? { ... }
+        let urlRequest = URLRequest(url: url)
+        
+        let dataTask = URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
+            if let error = error {
+                print("Request error: ", error)
+                return
+            }
+            
+            guard let response = response as? HTTPURLResponse else { return }
+            
+            if response.statusCode == 200 {
+                guard let data = data else { return }
+                DispatchQueue.main.async {
+                    do {
+                        let pokemonSpecieDetail = try JSONDecoder().decode(PokemonSpecieResponse.self, from: data)
+                        pokemonDescriptionCompletitionHandler(pokemonSpecieDetail, nil)
+                    } catch let error {
+                        pokemonDescriptionCompletitionHandler(nil, error)
+                        print("Error decoding: ", error)
+                    }
+                }
+            }
+        }
+        
+        dataTask.resume()
     }
 }
- */

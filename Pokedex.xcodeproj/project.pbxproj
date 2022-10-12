@@ -17,6 +17,8 @@
 		2156977628F4A4570037B18D /* DetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2156977528F4A4570037B18D /* DetailViewModel.swift */; };
 		2156977928F4A4F70037B18D /* TextUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2156977828F4A4F70037B18D /* TextUtils.swift */; };
 		2173A86728F6E06E0076F7D5 /* PokeApiRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2173A86628F6E06E0076F7D5 /* PokeApiRepository.swift */; };
+		2173A86D28F766180076F7D5 /* PokeApiEndpoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2173A86C28F766180076F7D5 /* PokeApiEndpoints.swift */; };
+		2173A86F28F769000076F7D5 /* PokemonApiRepositoryProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2173A86E28F769000076F7D5 /* PokemonApiRepositoryProtocol.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +33,8 @@
 		2156977528F4A4570037B18D /* DetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewModel.swift; sourceTree = "<group>"; };
 		2156977828F4A4F70037B18D /* TextUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextUtils.swift; sourceTree = "<group>"; };
 		2173A86628F6E06E0076F7D5 /* PokeApiRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokeApiRepository.swift; sourceTree = "<group>"; };
+		2173A86C28F766180076F7D5 /* PokeApiEndpoints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokeApiEndpoints.swift; sourceTree = "<group>"; };
+		2173A86E28F769000076F7D5 /* PokemonApiRepositoryProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonApiRepositoryProtocol.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,6 +100,8 @@
 			isa = PBXGroup;
 			children = (
 				2173A86628F6E06E0076F7D5 /* PokeApiRepository.swift */,
+				2173A86C28F766180076F7D5 /* PokeApiEndpoints.swift */,
+				2173A86E28F769000076F7D5 /* PokemonApiRepositoryProtocol.swift */,
 			);
 			path = Repository;
 			sourceTree = "<group>";
@@ -195,6 +201,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2173A86F28F769000076F7D5 /* PokemonApiRepositoryProtocol.swift in Sources */,
 				2130DBA428E395E10005859A /* ApiResponse.swift in Sources */,
 				2156977628F4A4570037B18D /* DetailViewModel.swift in Sources */,
 				211F986428E09A3D00028718 /* HomeView.swift in Sources */,
@@ -202,6 +209,7 @@
 				2130DBA128E383CE0005859A /* DetailView.swift in Sources */,
 				212954C328F49C41003CBFE7 /* HomeViewModel.swift in Sources */,
 				211F986228E09A3D00028718 /* PokedexApp.swift in Sources */,
+				2173A86D28F766180076F7D5 /* PokeApiEndpoints.swift in Sources */,
 				2156977928F4A4F70037B18D /* TextUtils.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
