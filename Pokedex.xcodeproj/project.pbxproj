@@ -16,6 +16,7 @@
 		2130DBA428E395E10005859A /* ApiResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2130DBA328E395E10005859A /* ApiResponse.swift */; };
 		2156977628F4A4570037B18D /* DetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2156977528F4A4570037B18D /* DetailViewModel.swift */; };
 		2156977928F4A4F70037B18D /* TextUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2156977828F4A4F70037B18D /* TextUtils.swift */; };
+		2173A86728F6E06E0076F7D5 /* PokeApiRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2173A86628F6E06E0076F7D5 /* PokeApiRepository.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +30,7 @@
 		2130DBA328E395E10005859A /* ApiResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiResponse.swift; sourceTree = "<group>"; };
 		2156977528F4A4570037B18D /* DetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewModel.swift; sourceTree = "<group>"; };
 		2156977828F4A4F70037B18D /* TextUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextUtils.swift; sourceTree = "<group>"; };
+		2173A86628F6E06E0076F7D5 /* PokeApiRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokeApiRepository.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,6 +95,7 @@
 		212954C428F49C46003CBFE7 /* Repository */ = {
 			isa = PBXGroup;
 			children = (
+				2173A86628F6E06E0076F7D5 /* PokeApiRepository.swift */,
 			);
 			path = Repository;
 			sourceTree = "<group>";
@@ -195,6 +198,7 @@
 				2130DBA428E395E10005859A /* ApiResponse.swift in Sources */,
 				2156977628F4A4570037B18D /* DetailViewModel.swift in Sources */,
 				211F986428E09A3D00028718 /* HomeView.swift in Sources */,
+				2173A86728F6E06E0076F7D5 /* PokeApiRepository.swift in Sources */,
 				2130DBA128E383CE0005859A /* DetailView.swift in Sources */,
 				212954C328F49C41003CBFE7 /* HomeViewModel.swift in Sources */,
 				211F986228E09A3D00028718 /* PokedexApp.swift in Sources */,
