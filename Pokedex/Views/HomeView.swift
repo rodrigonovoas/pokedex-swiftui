@@ -6,32 +6,37 @@
 //
 
 import SwiftUI
+import FLAnimatedImage
 
 struct HomeView: View {
     @ObservedObject private var viewModel: HomeViewModel
-    @State var searchedPokemon: String
+    @State private var searchedPokemon: String
+    @State private var boxNumber: Int = 1
     
     var body: some View {
         NavigationView {
-            ZStack(alignment: .top) {
+            ZStack(alignment: .center) {
+                /*
                 if(viewModel.pokemonHomeList.isEmpty){
                     Spacer()
+                    // Image("pikachu-sorprendido")
                     Text("Pokémon not found").background(Color.white)
                     Spacer()
                 }
+                 */
                 
                 VStack {
-                    
                     HStack {
                         Image("ic_left_arrow").resizable().frame(width: 30, height: 30)
                             .padding(.leading, 10)
                             .onTapGesture {
                                 if(viewModel.getFromNumber() >= 12){
                                     viewModel.getPokemonsFromAPI(from: viewModel.getFromNumber() - 12)
+                                    boxNumber -= 1
                                 }
                             }
                         
-                        Text("BOX 1")
+                        Text("BOX " + boxNumber.description)
                             .frame(maxWidth: .infinity, maxHeight: 30)
                             .background(Rectangle().fill(Color.white).cornerRadius(4))
                             .padding(.trailing, 10)
@@ -41,6 +46,7 @@ struct HomeView: View {
                             .padding(.trailing, 10)
                             .onTapGesture {
                                 viewModel.getPokemonsFromAPI(from: viewModel.getFromNumber() + 12)
+                                boxNumber += 1
                             }
                     }
 
@@ -119,6 +125,16 @@ struct HomeView: View {
             .background(LinearGradient(gradient: Gradient(colors: [Color("startBackgroundGradient"), Color("endBackgroundGradient")]), startPoint: .top, endPoint: .bottom))
         }.onAppear(){
             viewModel.getPokemonsFromAPI(from: 0)
+        }.overlay(){
+            if(viewModel.pokemonHomeList.isEmpty){
+                VStack {
+                    GIFView(type: .url(URL(string: "https://media.tenor.com/fSsxftCb8w0AAAAi/pikachu-running.gif")!))
+                        .frame(width: 75, height: 50)
+                        .padding()
+                    
+                    Text("LOADING...")
+                }
+            }
         }
     }
     
