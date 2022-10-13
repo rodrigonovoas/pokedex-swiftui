@@ -41,6 +41,7 @@ struct HomeView: View {
                             .background(Rectangle().fill(Color.white).cornerRadius(4))
                             .padding(.trailing, 10)
                             .padding(.leading, 10)
+                            .font(.custom("Pokemon-Pixel-Font", size: 24))
                         
                         Image("ic_right_arrow").resizable().frame(width: 30, height: 30)
                             .padding(.trailing, 10)
@@ -105,8 +106,8 @@ struct HomeView: View {
                                     }
                                     .padding()
                                     .overlay(
-                                        Text("\(poke.order) \(poke.name)")
-                                            .font(.system(size: 14))
+                                        Text("\(poke.order)  \(poke.name)")
+                                            .font(.custom("Pokemon-Pixel-Font", size: 16))
                                         ,alignment: .bottom)
                                 }
                             }
@@ -132,7 +133,7 @@ struct HomeView: View {
                         .frame(width: 75, height: 50)
                         .padding()
                     
-                    Text("LOADING...")
+                    Text("LOADING...").font(.custom("Pokemon-Pixel-Font", size: 20))
                 }
             }
         }
