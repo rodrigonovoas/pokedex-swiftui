@@ -14,7 +14,7 @@ struct HomeView: View {
     var body: some View {
         NavigationView {
             ZStack(alignment: .top) {
-                if(viewModel.pokemonList.isEmpty){
+                if(viewModel.pokemonHomeList.isEmpty){
                     Spacer()
                     Text("Pokémon not found").background(Color.white)
                     Spacer()
@@ -25,6 +25,11 @@ struct HomeView: View {
                     HStack {
                         Image("ic_left_arrow").resizable().frame(width: 30, height: 30)
                             .padding(.leading, 10)
+                            .onTapGesture {
+                                if(viewModel.getFromNumber() >= 12){
+                                    viewModel.getPokemonsFromAPI(from: viewModel.getFromNumber() - 12)
+                                }
+                            }
                         
                         Text("BOX 1")
                             .frame(maxWidth: .infinity, maxHeight: 30)
@@ -34,6 +39,9 @@ struct HomeView: View {
                         
                         Image("ic_right_arrow").resizable().frame(width: 30, height: 30)
                             .padding(.trailing, 10)
+                            .onTapGesture {
+                                viewModel.getPokemonsFromAPI(from: viewModel.getFromNumber() + 12)
+                            }
                     }
 
                     /*
@@ -58,7 +66,7 @@ struct HomeView: View {
                             GridItem(.fixed(100)),
                             GridItem(.fixed(100))
                         ], spacing: 4, content: {
-                            ForEach(viewModel.pokemonList) { poke in
+                            ForEach(viewModel.pokemonHomeList) { poke in
                                 NavigationLink {
                                     DetailView(pokemon: poke)
                                 } label: {
@@ -110,7 +118,7 @@ struct HomeView: View {
             .navigationBarTitle("Home", displayMode: .inline)
             .background(LinearGradient(gradient: Gradient(colors: [Color("startBackgroundGradient"), Color("endBackgroundGradient")]), startPoint: .top, endPoint: .bottom))
         }.onAppear(){
-            viewModel.getPokemonsFromAPI()
+            viewModel.getPokemonsFromAPI(from: 0)
         }
     }
     

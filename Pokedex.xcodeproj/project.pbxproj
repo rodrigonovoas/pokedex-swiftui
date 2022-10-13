@@ -19,6 +19,7 @@
 		2173A86728F6E06E0076F7D5 /* PokeApiRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2173A86628F6E06E0076F7D5 /* PokeApiRepository.swift */; };
 		2173A86D28F766180076F7D5 /* PokeApiEndpoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2173A86C28F766180076F7D5 /* PokeApiEndpoints.swift */; };
 		2173A86F28F769000076F7D5 /* PokemonApiRepositoryProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2173A86E28F769000076F7D5 /* PokemonApiRepositoryProtocol.swift */; };
+		2173A87228F83F1C0076F7D5 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 2173A87128F83F1C0076F7D5 /* RxSwift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +43,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2173A87228F83F1C0076F7D5 /* RxSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -147,6 +149,9 @@
 			dependencies = (
 			);
 			name = Pokedex;
+			packageProductDependencies = (
+				2173A87128F83F1C0076F7D5 /* RxSwift */,
+			);
 			productName = Pokedex;
 			productReference = 211F985E28E09A3D00028718 /* Pokedex.app */;
 			productType = "com.apple.product-type.application";
@@ -175,6 +180,9 @@
 				Base,
 			);
 			mainGroup = 211F985528E09A3D00028718;
+			packageReferences = (
+				2173A87028F83F1C0076F7D5 /* XCRemoteSwiftPackageReference "RxSwift" */,
+			);
 			productRefGroup = 211F985F28E09A3D00028718 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -411,6 +419,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		2173A87028F83F1C0076F7D5 /* XCRemoteSwiftPackageReference "RxSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ReactiveX/RxSwift";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		2173A87128F83F1C0076F7D5 /* RxSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2173A87028F83F1C0076F7D5 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxSwift;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 211F985628E09A3D00028718 /* Project object */;
 }
