@@ -16,14 +16,15 @@ struct HomeView: View {
     var body: some View {
         NavigationView {
             ZStack(alignment: .center) {
-                /*
-                if(viewModel.pokemonHomeList.isEmpty){
+                
+                if(viewModel.showNotFoundMessage){
                     Spacer()
-                    // Image("pikachu-sorprendido")
-                    Text("Pokémon not found").background(Color.white)
+                    VStack {
+                        Image("ic_pikachu_sorprendido").resizable().frame(width: 125, height: 100)
+                        Text("Pokémon not found").background(Color.white)
+                    }
                     Spacer()
                 }
-                 */
                 
                 VStack {
                     HStack {
@@ -50,22 +51,6 @@ struct HomeView: View {
                                 boxNumber += 1
                             }
                     }
-
-                    /*
-                    HStack {
-                        Image(systemName: "magnifyingglass").padding(.leading, 20)
-                        TextField("Search...", text: $searchedPokemon, onCommit: {
-                            pokemonList.removeAll()
-                            if(searchedPokemon.isEmpty){
-                                getPokemonsFromAPI()
-                            }else{
-                                getPokemonByName(pokemon: searchedPokemon.lowercased())
-                            }
-                        }).padding(.trailing, 20)
-                    }
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .padding(.bottom, 20)
-                     */
                     
                     ScrollView {
                         LazyVGrid(columns: [
@@ -116,6 +101,9 @@ struct HomeView: View {
                     
                     HStack {
                         Image("ic_search").resizable().frame(width: 50, height: 50).padding(.leading, 20).foregroundColor(.white)
+                            .onTapGesture {
+                                viewModel.activateSearchbar = !viewModel.activateSearchbar
+                            }
                         Image("ic_team").resizable().frame(width: 50, height: 50).padding(.leading, 10).foregroundColor(.white)
                         Spacer()
                         // Image("ic_ok").resizable().frame(width: 50, height: 50).padding(.trailing, 20).foregroundColor(.white)
@@ -127,13 +115,17 @@ struct HomeView: View {
         }.onAppear(){
             viewModel.getPokemonsFromAPI(from: 0)
         }.overlay(){
-            if(viewModel.pokemonHomeList.isEmpty){
-                VStack {
+            VStack {
+                if(viewModel.pokemonHomeList.isEmpty && !viewModel.showNotFoundMessage){
                     GIFView(type: .url(URL(string: "https://media.tenor.com/fSsxftCb8w0AAAAi/pikachu-running.gif")!))
                         .frame(width: 75, height: 50)
                         .padding()
                     
-                    Text("LOADING...").font(.custom("Pokemon-Pixel-Font", size: 20))
+                    Text("LOADING...").font(.custom("Pokemon-Pixel-Font", size: 20)).onAppear(){ viewModel.activateSearchbar = false }
+                }
+                
+                if(viewModel.activateSearchbar){
+                    SearchbarView(searchedPokemon: $searchedPokemon, viewModel: viewModel)
                 }
             }
         }

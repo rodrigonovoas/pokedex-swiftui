@@ -10,9 +10,12 @@ import RxSwift
 
 public class HomeViewModel: ObservableObject {
     @Published var pokemonHomeList: [PokemonDetailResponse] = []
+    @Published  var activateSearchbar: Bool = false
+    @Published  var showNotFoundMessage: Bool = false
+    
     private var from: Int = 0
     private var disableRequest = false
-    private var repository: PokeApiRepositoryProtocol
+    private var repository: PokeApiRepository
     
     private var pokemons: Observable<[Pokemon]>?
     private var pokeDetail: Observable<PokemonDetailResponse>?
@@ -27,10 +30,11 @@ public class HomeViewModel: ObservableObject {
     }
     
     func getPokemonsFromAPI(from: Int){
+        self.showNotFoundMessage = false
         self.pokemonHomeList.removeAll()
         self.from = from
         
-        pokemons = repository.getPokemonsFromAPI(from: from)
+        pokemons = repository.getPokemonList(from: from)
         
         pokemons?.subscribe(onNext: { [weak self] (list) in
             for i in 0...(list.count-1) {
@@ -41,13 +45,13 @@ public class HomeViewModel: ObservableObject {
         .disposed(by: disposeBag)
     }
     
-    fileprivate func getAndAppendPokemonDetailToList(list: [Pokemon], i: Int) {
+    private func getAndAppendPokemonDetailToList(list: [Pokemon], i: Int) {
         var pokeDetail: Observable<PokemonDetailResponse>?
-        pokeDetail = repository.getPokemonDetailByNameFromAPI(url: list[i].url)
+        pokeDetail = repository.getPokemonDetail(url: list[i].url)
         
         pokeDetail?.subscribe(onNext: { [weak self] (detail) in
             self?.pokemonHomeList.append(detail)
-            self?.repository.getPokemonDetailByNameFromAPI(url: list[i].url)
+            self?.repository.getPokemonDetail(url: list[i].url)
             
             if(self?.pokemonHomeList.count == list.count){
                 self?.pokemonHomeList.sort(by: { $0.order < $1.order })
@@ -55,4 +59,26 @@ public class HomeViewModel: ObservableObject {
         })
         .disposed(by: self.disposeBag)
     }
+    
+    func getPokemonByName(name: String) {
+        repository.getPokemonByName(name: name, pokemonDescriptionCompletitionHandler: { pokemonDetail, error in
+            self.pokemonHomeList.removeAll()
+            
+            if(pokemonDetail == nil) {
+                DispatchQueue.main.async{
+                    self.showNotFoundMessage = true
+                    self.activateSearchbar = false
+                }
+                return
+            }
+            
+            if let pokemonDetail = pokemonDetail {
+                self.showNotFoundMessage = false
+                self.pokemonHomeList.append(pokemonDetail)
+            }
+            
+            self.activateSearchbar = false
+        })
+    }
+
 }
