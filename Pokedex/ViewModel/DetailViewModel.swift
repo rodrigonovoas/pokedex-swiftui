@@ -6,11 +6,25 @@
 //
 
 import Foundation
+import RxSwift
+
+public struct Move: Identifiable {
+    public var id = UUID()
+    var name: String
+    var type: String
+    var description: String
+}
 
 public class DetailViewModel: ObservableObject  {
     @Published var description = ""
+    @Published var moves:[Move] = []
+    
     private var repository: PokeApiRepository
     private var textUtils: TextUtils = TextUtils()
+    
+    private var pokemonMoves: Observable<PokemonMoveResponse>?
+    private let disposeBag = DisposeBag()
+    
     
     init(){
         repository = PokeApiRepository(session: URLSession.shared)
@@ -22,5 +36,14 @@ public class DetailViewModel: ObservableObject  {
                 self.description = self.textUtils.removeSpacesFromText(description: pokemonSpecieResponse.flavor_text_entries[0].flavor_text)
             }
         })
+    }
+    
+    func getPokemonMoveFromApi(url: String, name: String) {
+        pokemonMoves = repository.getPokemonMoveDetail(url: url)
+        
+        pokemonMoves?.subscribe(onNext: { [weak self] (move) in
+            self?.moves.append(Move(name: name, type: move.type.name, description: move.effectEntries[0].shortEffect))
+        })
+        .disposed(by: disposeBag)
     }
 }

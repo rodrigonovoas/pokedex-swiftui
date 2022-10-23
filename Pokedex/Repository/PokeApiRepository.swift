@@ -17,8 +17,8 @@ struct PokeApiRepository: Repository {
         self.session = session
     }
     
-    func getPokemonList(from: Int) -> Observable<[Pokemon]> {
-        return Observable<[Pokemon]>.create { observer in
+    func getPokemonList(from: Int) -> Observable<[PokemonResponse]> {
+        return Observable<[PokemonResponse]>.create { observer in
             let getPokemonsBaseUrl = baseURL + PokeApiEndpoints.pokemonList.rawValue
             let urlEndpoint = getPokemonsBaseUrl + "?limit=12&offset="+from.description
             
@@ -82,6 +82,7 @@ struct PokeApiRepository: Repository {
                         do {
                             let pokemonDetail = try JSONDecoder().decode(PokemonDetailResponse.self, from: data)
                             observer.onNext(pokemonDetail)
+                            
                         } catch let error {
                             print("Error decoding: ", error)
                             observer.onError(error)
@@ -160,5 +161,43 @@ struct PokeApiRepository: Repository {
         }
         
         dataTask.resume()
+    }
+    
+    func getPokemonMoveDetail(url: String) -> Observable<PokemonMoveResponse> {
+        return Observable<PokemonMoveResponse>.create { observer in
+            guard let url = URL(string: url) else {
+                return Disposables.create()
+                // fatalError("Missing URL")
+            }
+            
+            let urlRequest = URLRequest(url: url)
+            
+            let dataTask = URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
+                if let error = error {
+                    print("Request error: ", error)
+                    return
+                }
+                
+                guard let response = response as? HTTPURLResponse else { return }
+
+                if response.statusCode == 200 {
+                    guard let data = data else { return }
+                    DispatchQueue.main.async {
+                        do {
+                            let pokemonMove = try JSONDecoder().decode(PokemonMoveResponse.self, from: data)
+                            observer.onNext(pokemonMove)
+                            
+                        } catch let error {
+                            print("Error decoding: ", error)
+                            observer.onError(error)
+                        }
+                    }
+                }
+            }
+            
+            dataTask.resume()
+            
+            return Disposables.create {}
+        }
     }
 }

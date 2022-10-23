@@ -17,7 +17,7 @@ public class HomeViewModel: ObservableObject {
     private var disableRequest = false
     private var repository: PokeApiRepository
     
-    private var pokemons: Observable<[Pokemon]>?
+    private var pokemons: Observable<[PokemonResponse]>?
     private var pokeDetail: Observable<PokemonDetailResponse>?
     private let disposeBag = DisposeBag()
     
@@ -45,7 +45,7 @@ public class HomeViewModel: ObservableObject {
         .disposed(by: disposeBag)
     }
     
-    private func getAndAppendPokemonDetailToList(list: [Pokemon], i: Int) {
+    private func getAndAppendPokemonDetailToList(list: [PokemonResponse], i: Int) {
         var pokeDetail: Observable<PokemonDetailResponse>?
         pokeDetail = repository.getPokemonDetail(url: list[i].url)
         
