@@ -12,6 +12,7 @@ struct HomeView: View {
     @ObservedObject private var viewModel: HomeViewModel
     @State private var searchedPokemon: String
     @State private var boxNumber: Int = 1
+    @State private var showTeam: Bool = false
     
     var body: some View {
         NavigationView {
@@ -27,6 +28,10 @@ struct HomeView: View {
                     tableView
                     
                     bottomView
+                }
+                
+                if(showTeam){
+                    CustomTeamView()
                 }
             }
             .navigationBarTitle("Home", displayMode: .inline)
@@ -146,6 +151,9 @@ struct HomeView: View {
                     viewModel.activateSearchbar = !viewModel.activateSearchbar
                 }
             Image("ic_team").resizable().frame(width: 50, height: 50).padding(.leading, 10).foregroundColor(.white)
+                .onTapGesture {
+                    showTeam = !showTeam
+                }
             Spacer()
             // Image("ic_ok").resizable().frame(width: 50, height: 50).padding(.trailing, 20).foregroundColor(.white)
         }

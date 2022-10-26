@@ -11,6 +11,8 @@ struct DetailView: View {
     @State var pokemon: PokemonDetailResponse
     @ObservedObject private var viewModel: DetailViewModel = DetailViewModel()
     
+    private let pokemonTeamHelper = PokemonTeamHelper()
+    
     var body: some View {
         ZStack {
             ScrollView {
@@ -23,6 +25,10 @@ struct DetailView: View {
                 abilitiesView
                 
                 movesView
+                
+                Button("Add Pokemon") {
+                    self.pokemonTeamHelper.addPokemonToTeamList(pokemonName: self.pokemon.name, pokemonImage: self.pokemon.sprites.other.officialArtwork.front_default)
+                }
             }
         }.onAppear(){
             viewModel.getPokemonDescriptionFromAPI(endpoint: pokemon.species.url)
