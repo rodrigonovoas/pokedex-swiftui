@@ -7,6 +7,10 @@
 
 import Foundation
 
+public enum PokemonTeamAdditionStatus {
+    case success, failed, alreadyAdded, fullTeam
+}
+
 public class PokemonTeamHelper {
     
     let key = "POKEMON_TEAM_POKEDEX"
@@ -58,23 +62,36 @@ public class PokemonTeamHelper {
         }
     }
     
-    public func addPokemonToTeamList(pokemonName: String, pokemonImage: String) -> Bool {
+    public func addPokemonToTeamList(pokemonName: String, pokemonImage: String) -> PokemonTeamAdditionStatus {
         var pokes = getTeamFromLocalCache()
         
-        if(pokes.count < 6){
-            do {
-                pokes.append(PokemonTeam(name: pokemonName, imageUrl: pokemonImage))
-                let encoder = JSONEncoder()
-                let data = try encoder.encode(pokes)
-                UserDefaults.standard.set(data, forKey: key)
-                return true
-            } catch {
-                print("Unable to Encode Array of Pokemon (\(error))")
-                return false
-            }
-        } else {
-            print("DEBUG-- YOU CAN'T ADD MORE POKEMONS!")
-            return false
+        if(isPokemonAlreadyAdded(name: pokemonName, pokemonTeam: pokes)) {
+            return PokemonTeamAdditionStatus.alreadyAdded
         }
+        
+        if(pokes.count >= 6){
+            return PokemonTeamAdditionStatus.fullTeam
+        }
+        
+        do {
+            pokes.append(PokemonTeam(name: pokemonName, imageUrl: pokemonImage))
+            let encoder = JSONEncoder()
+            let data = try encoder.encode(pokes)
+            UserDefaults.standard.set(data, forKey: key)
+            return PokemonTeamAdditionStatus.success
+        } catch {
+            print("Unable to Encode Array of Pokemon (\(error))")
+            return PokemonTeamAdditionStatus.failed
+        }
+    }
+    
+    private func isPokemonAlreadyAdded(name: String, pokemonTeam: [PokemonTeam]) -> Bool {
+        var alreadyAdded = false
+        
+        for pokemon in pokemonTeam {
+            if(pokemon.name == name) { return true }
+        }
+        
+        return alreadyAdded
     }
 }

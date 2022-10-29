@@ -13,7 +13,7 @@ struct SearchbarView: View {
     @ObservedObject var viewModel: HomeViewModel
 
     var body: some View {
-        VStack(alignment: .leading) {
+        VStack {
             Text("Enter pokemon name")
                 .font(.custom("Pokemon-Pixel-Font", size: 24))
                 .padding(.leading, 18)
@@ -32,8 +32,7 @@ struct SearchbarView: View {
         .textFieldStyle(RoundedBorderTextFieldStyle())
         .padding()
         .background(Color("endBackgroundGradient"))
-        .padding(.trailing, 9)
-        .padding(.leading, 9)
-        .cornerRadius(15)
+        .cornerRadius(12)
+        .padding(.init(top: 0, leading: 20, bottom: 0, trailing: 20))
     }
 }

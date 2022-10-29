@@ -25,6 +25,7 @@
 		2173A88228F8B4E30076F7D5 /* Pokemon-Font.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2173A88128F8B4E30076F7D5 /* Pokemon-Font.ttf */; };
 		217878D928F95328005F3C79 /* SearchbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217878D828F95328005F3C79 /* SearchbarView.swift */; };
 		217F9A7D2909CC5B006E6D55 /* PokemonTeamHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217F9A7C2909CC5B006E6D55 /* PokemonTeamHelper.swift */; };
+		2191892E290D32900042C0BB /* CommonDialogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2191892D290D32900042C0BB /* CommonDialogView.swift */; };
 		21A25AFE290738C400E94DD2 /* CustomTeamView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21A25AFD290738C400E94DD2 /* CustomTeamView.swift */; };
 /* End PBXBuildFile section */
 
@@ -47,6 +48,7 @@
 		2173A88128F8B4E30076F7D5 /* Pokemon-Font.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Pokemon-Font.ttf"; path = "Pokedex/Assets/Pokemon-Font.ttf"; sourceTree = SOURCE_ROOT; };
 		217878D828F95328005F3C79 /* SearchbarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchbarView.swift; sourceTree = "<group>"; };
 		217F9A7C2909CC5B006E6D55 /* PokemonTeamHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonTeamHelper.swift; sourceTree = "<group>"; };
+		2191892D290D32900042C0BB /* CommonDialogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonDialogView.swift; sourceTree = "<group>"; };
 		21A25AFD290738C400E94DD2 /* CustomTeamView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTeamView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -156,6 +158,7 @@
 				2173A87B28F8AE880076F7D5 /* GIFView.swift */,
 				217878D828F95328005F3C79 /* SearchbarView.swift */,
 				21A25AFD290738C400E94DD2 /* CustomTeamView.swift */,
+				2191892D290D32900042C0BB /* CommonDialogView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -246,6 +249,7 @@
 				211F986428E09A3D00028718 /* HomeView.swift in Sources */,
 				2173A86728F6E06E0076F7D5 /* PokeApiRepository.swift in Sources */,
 				2130DBA128E383CE0005859A /* DetailView.swift in Sources */,
+				2191892E290D32900042C0BB /* CommonDialogView.swift in Sources */,
 				212954C328F49C41003CBFE7 /* HomeViewModel.swift in Sources */,
 				217878D928F95328005F3C79 /* SearchbarView.swift in Sources */,
 				211F986228E09A3D00028718 /* PokedexApp.swift in Sources */,

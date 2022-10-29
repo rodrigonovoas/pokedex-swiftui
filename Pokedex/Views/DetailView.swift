@@ -8,13 +8,15 @@
 import SwiftUI
 
 struct DetailView: View {
+    @State private var uiMessage: String = ""
+    @State private var showCommonDialog: Bool = false
     @State var pokemon: PokemonDetailResponse
     @ObservedObject private var viewModel: DetailViewModel = DetailViewModel()
     
     private let pokemonTeamHelper = PokemonTeamHelper()
     
     var body: some View {
-        ZStack {
+        ZStack(alignment: .center) {
             ScrollView {
                 headerView
                 
@@ -27,8 +29,14 @@ struct DetailView: View {
                 movesView
                 
                 Button("Add Pokemon") {
-                    self.pokemonTeamHelper.addPokemonToTeamList(pokemonName: self.pokemon.name, pokemonImage: self.pokemon.sprites.other.officialArtwork.front_default)
+                    let teamIsNotFull = self.pokemonTeamHelper.addPokemonToTeamList(pokemonName: self.pokemon.name, pokemonImage: self.pokemon.sprites.other.officialArtwork.front_default)
+                    
+                    showUiMessageAfterAddingPokemon(addingStatus: teamIsNotFull)
                 }
+            }
+            
+            if(showCommonDialog) {
+                CommonDialogView(message: $uiMessage, showCommonDialog: $showCommonDialog)
             }
         }.onAppear(){
             viewModel.getPokemonDescriptionFromAPI(endpoint: pokemon.species.url)
@@ -143,6 +151,23 @@ struct DetailView: View {
         for move in pokemon.moves {
             self.viewModel.getPokemonMoveFromApi(url: move.move.url, name: move.move.name)
         }
+    }
+    
+    private func showUiMessageAfterAddingPokemon(addingStatus: PokemonTeamAdditionStatus){
+        switch addingStatus {
+        case PokemonTeamAdditionStatus.alreadyAdded:
+            self.uiMessage = "This pokemon is already on your team!"
+        case PokemonTeamAdditionStatus.fullTeam:
+            self.uiMessage = "You can't add more pokemons to your team! You must remove one of them."
+        case PokemonTeamAdditionStatus.success:
+            self.uiMessage = "Pokemon added to your team!"
+        case PokemonTeamAdditionStatus.failed:
+            self.uiMessage = "An error ocurred while adding this pokemon to your team."
+        default:
+            self.uiMessage = "An error ocurred while adding this pokemon to your team."
+        }
+        
+        self.showCommonDialog = true
     }
 }
 

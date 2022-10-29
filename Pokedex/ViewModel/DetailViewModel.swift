@@ -42,7 +42,11 @@ public class DetailViewModel: ObservableObject  {
         pokemonMoves = repository.getPokemonMoveDetail(url: url)
         
         pokemonMoves?.subscribe(onNext: { [weak self] (move) in
-            self?.moves.append(Move(name: name, type: move.type.name, description: move.effectEntries[0].shortEffect))
+            var moveDescription = ""
+            if(!move.effectEntries.isEmpty) {
+                moveDescription = move.effectEntries[0].shortEffect
+            }
+            self?.moves.append(Move(name: name, type: move.type.name, description: moveDescription))
         })
         .disposed(by: disposeBag)
     }

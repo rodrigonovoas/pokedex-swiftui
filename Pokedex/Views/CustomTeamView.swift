@@ -28,11 +28,10 @@ struct CustomTeamView: View {
 
     var body: some View {
         VStack {
-            Text("Pokemon Team").font(.system(size: 30))
             LazyVGrid(columns: columns) {
                 ForEach(pokes) { poke in
                     VStack{
-                        Text(poke.name)
+                        Text(poke.name).font(.custom("Pokemon-Pixel-Font", size: 20))
                         
                         AsyncImage(url: URL(string: poke.imageUrl), transaction: .init(animation: .spring(response: 1.6))) { phase in
                             switch phase {
@@ -51,10 +50,14 @@ struct CustomTeamView: View {
                                     .foregroundColor(.red)
                             }
                         }
-                        .frame(height: 80)
+                        .frame(width: 100, height: 80)
                     }
                     .padding(5)
-                    .background(Color.blue)
+                    .background(.white)
+                    .overlay(
+                           RoundedRectangle(cornerRadius: 12)
+                               .stroke(LinearGradient(gradient: Gradient(colors: [Color("startTeamBackgroundColor"), Color("endTeamBackgroundColor")]), startPoint: .top, endPoint: .bottom), lineWidth: 8)
+                       )
                     .cornerRadius(12)
                     .onLongPressGesture {
                         selectedPokemonToDelete = poke.name
@@ -63,12 +66,18 @@ struct CustomTeamView: View {
                 }
             }
             .padding(20)
-            .background(Color.red)
+            .background(
+                    Image("teamBackgroundImage")
+                        .resizable()
+                        .scaledToFill()
+                )
             .cornerRadius(12)
-            .padding(.init(top: 0, leading: 20, bottom: 0, trailing: 20))
+            .padding(.init(top: 0, leading: 40, bottom: 0, trailing: 40))
             .onAppear(){
                 self.pokes = pokemonTeamHelper.getTeamFromLocalCache()
             }
+            
+            Text("- Long press:  delete pokemon").font(.custom("Pokemon-Pixel-Font", size: 20))
         }
         .alert(isPresented:$showDeleteAlert) {
                   Alert(
