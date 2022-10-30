@@ -79,8 +79,7 @@ struct HomeView: View {
             Text("BOX " + boxNumber.description)
                 .frame(maxWidth: .infinity, maxHeight: 30)
                 .background(Rectangle().fill(Color.white).cornerRadius(4))
-                .padding(.trailing, 10)
-                .padding(.leading, 10)
+                .padding(.init(top: 0, leading: 10, bottom: 0, trailing: 10))
                 .font(.custom("Pokemon-Pixel-Font", size: 24))
             
             Image("ic_right_arrow").resizable().frame(width: 30, height: 30)

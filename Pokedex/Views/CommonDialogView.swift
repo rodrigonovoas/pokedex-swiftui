@@ -24,12 +24,6 @@ struct CommonDialogView: View {
                     .onTapGesture {
                         showCommonDialog = false
                     }
-                
-                /*
-                Image("ic_cancel")
-                    .resizable()
-                    .frame(width: 38, height: 38)
-                 */
             }
             
         }

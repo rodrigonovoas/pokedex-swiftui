@@ -27,8 +27,7 @@ struct SearchbarView: View {
                     viewModel.getPokemonByName(name: searchedPokemon.lowercased())
                 }
             })
-            .padding(.trailing, 18)
-            .padding(.leading, 18)
+            .padding(.init(top: 0, leading: 18, bottom: 0, trailing: 18))
             
         }
         .textFieldStyle(RoundedBorderTextFieldStyle())

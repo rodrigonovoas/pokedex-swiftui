@@ -29,74 +29,11 @@ struct CustomTeamView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            HStack {
-                Image("ic_team")
-                
-                Text("TEAM")
-                    .font(.custom("Pokemon-Pixel-Font", size: 26))
-            }
-            .padding(5)
-            .frame(maxWidth: .infinity)
-            .background(.white)
-            .cornerRadius(12)
-            .padding(.init(top: 0, leading: 40, bottom: 5, trailing: 40))
+            titleView
             
-            LazyVGrid(columns: columns) {
-                ForEach(pokes) { poke in
-                    VStack{
-                        Text(poke.name).font(.custom("Pokemon-Pixel-Font", size: 20))
-                        
-                        AsyncImage(url: URL(string: poke.imageUrl), transaction: .init(animation: .spring(response: 1.6))) { phase in
-                            switch phase {
-                            case .empty:
-                                ProgressView()
-                                    .progressViewStyle(.circular)
-                            case .success(let image):
-                                image
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fill)
-                            case .failure:
-                                Text("Failed fetching image. Make sure to check your data connection and try again.")
-                                    .foregroundColor(.red)
-                            @unknown default:
-                                Text("Unknown error. Please try again.")
-                                    .foregroundColor(.red)
-                            }
-                        }
-                        .frame(width: 100, height: 80)
-                    }
-                    .padding(5)
-                    .background(.white)
-                    .overlay(
-                           RoundedRectangle(cornerRadius: 12)
-                               .stroke(LinearGradient(gradient: Gradient(colors: [Color("startTeamBackgroundColor"), Color("endTeamBackgroundColor")]), startPoint: .top, endPoint: .bottom), lineWidth: 8)
-                       )
-                    .cornerRadius(12)
-                    .onLongPressGesture {
-                        selectedPokemonToDelete = poke.name
-                        showDeleteAlert = true
-                    }
-                }
-            }
-            .frame(minHeight: 300)
-            .padding(20)
-            .background(
-                    Image("teamBackgroundImage")
-                        .resizable()
-                        .scaledToFill()
-                )
-            .cornerRadius(12)
-            .padding(.init(top: 0, leading: 40, bottom: 0, trailing: 40))
-            .onAppear(){
-                self.pokes = pokemonTeamHelper.getTeamFromLocalCache()
-            }
-            .onTapGesture {
-                self.showView = false
-            }
+            gridView
             
-            Text("- Long press:  delete pokemon")
-                .padding(.top, 10)
-                .font(.custom("Pokemon-Pixel-Font", size: 20))
+            bottomMessagesView
         }
         .alert(isPresented:$showDeleteAlert) {
                   Alert(
@@ -107,6 +44,84 @@ struct CustomTeamView: View {
                       secondaryButton: .cancel()
                   )
               }
+    }
+    
+    @ViewBuilder
+    private var titleView: some View {
+        HStack {
+            Image("ic_team")
+            
+            Text("TEAM")
+                .font(.custom("Pokemon-Pixel-Font", size: 26))
+        }
+        .padding(5)
+        .frame(maxWidth: .infinity)
+        .background(.white)
+        .cornerRadius(12)
+        .padding(.init(top: 0, leading: 40, bottom: 5, trailing: 40))
+    }
+    
+    @ViewBuilder
+    private var gridView: some View {
+        LazyVGrid(columns: columns) {
+            ForEach(pokes) { poke in
+                VStack{
+                    Text(poke.name).font(.custom("Pokemon-Pixel-Font", size: 20))
+                    
+                    AsyncImage(url: URL(string: poke.imageUrl), transaction: .init(animation: .spring(response: 1.6))) { phase in
+                        switch phase {
+                        case .empty:
+                            ProgressView()
+                                .progressViewStyle(.circular)
+                        case .success(let image):
+                            image
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                        case .failure:
+                            Text("Failed fetching image. Make sure to check your data connection and try again.")
+                                .foregroundColor(.red)
+                        @unknown default:
+                            Text("Unknown error. Please try again.")
+                                .foregroundColor(.red)
+                        }
+                    }
+                    .frame(width: 100, height: 80)
+                }
+                .padding(5)
+                .background(.white)
+                .overlay(
+                       RoundedRectangle(cornerRadius: 12)
+                           .stroke(LinearGradient(gradient: Gradient(colors: [Color("startTeamBackgroundColor"), Color("endTeamBackgroundColor")]), startPoint: .top, endPoint: .bottom), lineWidth: 8)
+                   )
+                .cornerRadius(12)
+                .onLongPressGesture {
+                    selectedPokemonToDelete = poke.name
+                    showDeleteAlert = true
+                }
+            }
+        }
+        .frame(minHeight: 300)
+        .padding(20)
+        .background(
+                Image("teamBackgroundImage")
+                    .resizable()
+                    .scaledToFill()
+            )
+        .cornerRadius(12)
+        .padding(.init(top: 0, leading: 40, bottom: 0, trailing: 40))
+        .onAppear(){
+            self.pokes = pokemonTeamHelper.getTeamFromLocalCache()
+        }
+        .onTapGesture {
+            self.showView = false
+        }
+    }
+    
+    @ViewBuilder
+    private var bottomMessagesView: some View {
+        Text("- Long press:  delete pokemon")
+            .padding(.top, 10)
+            .font(.custom("Pokemon-Pixel-Font", size: 20))
     }
 }
 

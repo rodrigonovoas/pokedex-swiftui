@@ -28,23 +28,7 @@ struct DetailView: View {
                 
                 movesView
                 
-                HStack {
-                    Text("Add to your team")
-                    Image("ic_team")
-                }
-                .padding()
-                .background(.white)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 12)
-                        .stroke(LinearGradient(gradient: Gradient(colors: [Color("startTeamBackgroundColor"), Color("endTeamBackgroundColor")]), startPoint: .top, endPoint: .bottom), lineWidth: 8)
-                )
-                .cornerRadius(12)
-                .padding(.bottom, 20)
-                .onTapGesture {
-                    let teamIsNotFull = self.pokemonTeamHelper.addPokemonToTeamList(pokemonName: self.pokemon.name, pokemonImage: self.pokemon.sprites.other.officialArtwork.front_default)
-                    
-                    showUiMessageAfterAddingPokemon(addingStatus: teamIsNotFull)
-                }
+                addPokemonToTeamView
             }
             
             if(showCommonDialog) {
@@ -152,9 +136,7 @@ struct DetailView: View {
             VStack {
                 Text(viewModel.description)
                     .font(.system(size: 14))
-                    .padding(.top, 1)
-                    .padding(.trailing, 20)
-                    .padding(.leading, 20)
+                    .padding(.init(top: 1, leading: 20, bottom: 0, trailing: 20))
             }
             .padding()
             .frame(maxWidth: .infinity)
@@ -225,6 +207,27 @@ struct DetailView: View {
             )
             .cornerRadius(12, corners: [.bottomLeft, .bottomRight])
             .padding(.init(top: 0, leading: 5, bottom: 0, trailing: 5))
+        }
+    }
+    
+    @ViewBuilder
+    private var addPokemonToTeamView: some View {
+        HStack {
+            Text("Add to your team")
+            Image("ic_team")
+        }
+        .padding()
+        .background(.white)
+        .overlay(
+            RoundedRectangle(cornerRadius: 12)
+                .stroke(LinearGradient(gradient: Gradient(colors: [Color("startTeamBackgroundColor"), Color("endTeamBackgroundColor")]), startPoint: .top, endPoint: .bottom), lineWidth: 8)
+        )
+        .cornerRadius(12)
+        .padding(.bottom, 20)
+        .onTapGesture {
+            let teamIsNotFull = self.pokemonTeamHelper.addPokemonToTeamList(pokemonName: self.pokemon.name, pokemonImage: self.pokemon.sprites.other.officialArtwork.front_default)
+            
+            showUiMessageAfterAddingPokemon(addingStatus: teamIsNotFull)
         }
     }
     
