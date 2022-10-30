@@ -11,24 +11,22 @@ struct DetailView: View {
     @State private var uiMessage: String = ""
     @State private var showCommonDialog: Bool = false
     @State var pokemon: PokemonDetailResponse
-    @ObservedObject private var viewModel: DetailViewModel = DetailViewModel()
+    @StateObject private var viewModel: DetailViewModel = DetailViewModel()
     
     private let pokemonTeamHelper = PokemonTeamHelper()
     
     var body: some View {
         ZStack(alignment: .center) {
-            ZStack(alignment: .bottom) {
-                ScrollView {
-                    headerView
-                    
-                    generalInfoView
-                    
-                    descriptionView
-                    
-                    abilitiesView
-                    
-                    movesView
-                }
+            ScrollView {
+                headerView
+                
+                generalInfoView
+                
+                descriptionView
+                
+                abilitiesView
+                
+                movesView
                 
                 HStack {
                     Text("Add to your team")
@@ -37,9 +35,9 @@ struct DetailView: View {
                 .padding()
                 .background(.white)
                 .overlay(
-                       RoundedRectangle(cornerRadius: 12)
-                           .stroke(LinearGradient(gradient: Gradient(colors: [Color("startTeamBackgroundColor"), Color("endTeamBackgroundColor")]), startPoint: .top, endPoint: .bottom), lineWidth: 8)
-                   )
+                    RoundedRectangle(cornerRadius: 12)
+                        .stroke(LinearGradient(gradient: Gradient(colors: [Color("startTeamBackgroundColor"), Color("endTeamBackgroundColor")]), startPoint: .top, endPoint: .bottom), lineWidth: 8)
+                )
                 .cornerRadius(12)
                 .padding(.bottom, 20)
                 .onTapGesture {

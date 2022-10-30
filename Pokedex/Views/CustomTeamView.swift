@@ -15,6 +15,7 @@ public struct PokemonTeam: Identifiable, Codable {
 }
 
 struct CustomTeamView: View {
+    @Binding var showView: Bool
     @State private var pokes: [PokemonTeam] = []
     @State private var showDeleteAlert = false
     @State private var selectedPokemonToDelete: String = ""
@@ -28,7 +29,6 @@ struct CustomTeamView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            
             HStack {
                 Image("ic_team")
                 
@@ -78,6 +78,7 @@ struct CustomTeamView: View {
                     }
                 }
             }
+            .frame(minHeight: 300)
             .padding(20)
             .background(
                     Image("teamBackgroundImage")
@@ -88,6 +89,9 @@ struct CustomTeamView: View {
             .padding(.init(top: 0, leading: 40, bottom: 0, trailing: 40))
             .onAppear(){
                 self.pokes = pokemonTeamHelper.getTeamFromLocalCache()
+            }
+            .onTapGesture {
+                self.showView = false
             }
             
             Text("- Long press:  delete pokemon")

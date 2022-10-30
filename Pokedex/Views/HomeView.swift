@@ -30,7 +30,7 @@ struct HomeView: View {
                 }
                 
                 if(showTeam){
-                    CustomTeamView()
+                    CustomTeamView(showView: $showTeam)
                 }
             }
             .navigationBarTitle(Text("Home").font(.subheadline), displayMode: .inline)
@@ -163,7 +163,7 @@ struct HomeView: View {
                         viewModel.getPokemonsFromAPI(from: 0)
                     }
             }
-        }
+        }.padding(.bottom, 20)
     }
     
     init() {

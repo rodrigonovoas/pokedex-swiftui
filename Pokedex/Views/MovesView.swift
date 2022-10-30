@@ -27,7 +27,7 @@ struct MovesView: View {
                             .background(Color(moves[i].type + "TypeColor"))
                             .cornerRadius(12)
                     }
-                    .padding(.init(top: 5, leading: 0, bottom: 5, trailing: 0))
+                    .padding(.init(top: 5, leading: 0, bottom: 0, trailing: 0))
                     
                     HStack {
                         Text("Power: ").font(.system(size: 14))
@@ -39,12 +39,13 @@ struct MovesView: View {
                     
                     Text(moves[i].description)
                         .font(.system(size: 14))
+                        .padding(.top, 5)
                 }
                 .padding()
                 .frame(maxWidth: .infinity)
                 .background(Color("startSearchbarGradient"))
                 .cornerRadius(12)
-                .padding(.init(top: 0, leading: 5, bottom: 0, trailing: 5))
+                .padding(.init(top: 0, leading: 10, bottom: 0, trailing: 10))
             }
         }
     }

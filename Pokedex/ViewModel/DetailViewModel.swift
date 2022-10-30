@@ -48,7 +48,7 @@ public class DetailViewModel: ObservableObject  {
             if(!move.effectEntries.isEmpty) {
                 moveDescription = move.effectEntries[0].shortEffect
             }
-            self?.moves.append(Move(name: name, type: move.type.name, accuracy: move.accuracy, power: move.power, description: moveDescription))
+            self?.moves.append(Move(name: name, type: move.type.name, accuracy: move.accuracy ?? 0, power: move.power ?? 0, description: moveDescription))
         })
         .disposed(by: disposeBag)
     }
