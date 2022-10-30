@@ -17,18 +17,32 @@ struct DetailView: View {
     
     var body: some View {
         ZStack(alignment: .center) {
-            ScrollView {
-                headerView
+            ZStack(alignment: .bottom) {
+                ScrollView {
+                    headerView
+                    
+                    generalInfoView
+                    
+                    descriptionView
+                    
+                    abilitiesView
+                    
+                    movesView
+                }
                 
-                generalInfoView
-                
-                descriptionView
-                
-                abilitiesView
-                
-                movesView
-                
-                Button("Add Pokemon") {
+                HStack {
+                    Text("Add to your team")
+                    Image("ic_team")
+                }
+                .padding()
+                .background(.white)
+                .overlay(
+                       RoundedRectangle(cornerRadius: 12)
+                           .stroke(LinearGradient(gradient: Gradient(colors: [Color("startTeamBackgroundColor"), Color("endTeamBackgroundColor")]), startPoint: .top, endPoint: .bottom), lineWidth: 8)
+                   )
+                .cornerRadius(12)
+                .padding(.bottom, 20)
+                .onTapGesture {
                     let teamIsNotFull = self.pokemonTeamHelper.addPokemonToTeamList(pokemonName: self.pokemon.name, pokemonImage: self.pokemon.sprites.other.officialArtwork.front_default)
                     
                     showUiMessageAfterAddingPokemon(addingStatus: teamIsNotFull)
@@ -48,102 +62,171 @@ struct DetailView: View {
     private var headerView: some View {
         VStack {
             HStack {
-                AsyncImage(url: URL(string: pokemon.sprites.front_default))
-                    .frame(width: 75.0, height: 75.0)
-                
-                AsyncImage(url: URL(string: pokemon.sprites.back_default))
-                    .frame(width: 75.0, height: 75.0)
+                Image("ic_pokeball").resizable().frame(width: 25, height: 25)
+                Text("N. " + pokemon.order.description).padding(.leading).font(.system(size: 16))
+                Text(pokemon.name).font(.system(size: 16)).bold()
             }
+            .padding(.init(top: 5, leading: 0, bottom: 5, trailing: 0))
+            .frame(maxWidth: .infinity)
+            .background(Color("startSearchbarGradient"))
+            .cornerRadius(12)
+            .padding(.init(top: 0, leading: 5, bottom: 0, trailing: 5))
             
-            Text(pokemon.name).font(.system(size: 26)).bold()
-            
-            HStack {
-                ForEach(0..<pokemon.types.count) { i in
-                    Text(pokemon.types[i].type.name)
+            VStack {
+                HStack {
+                    AsyncImage(url: URL(string: pokemon.sprites.front_default))
+                        .frame(minWidth: 35, maxWidth: 75, minHeight: 35, maxHeight: 75)
+                    
+                    AsyncImage(url: URL(string: pokemon.sprites.back_default))
+                        .frame(minWidth: 35, maxWidth: 75, minHeight: 35, maxHeight: 75)
+                }
+                
+                HStack {
+                    ForEach(0..<pokemon.types.count) { i in
+                        Text(pokemon.types[i].type.name)
+                            .font(.system(size: 14))
+                            .foregroundColor(Color.white)
+                            .padding(.init(top: 4, leading: 8, bottom: 4, trailing: 8))
+                            .background(Color(getPokemonTypeBackgroundColor(type: pokemon.types[i].type.name)))
+                            .cornerRadius(12)
+                    }
                 }
             }
+            .padding()
+            .frame(maxWidth: .infinity)
+            .background(.white)
+            .overlay(
+                RoundedRectangle(cornerRadius: 12)
+                    .stroke(Color("startSearchbarGradient"), lineWidth: 8)
+            )
+            .cornerRadius(12)
+            .padding(.init(top: 0, leading: 5, bottom: 0, trailing: 5))
         }
+    }
+    
+    private func getPokemonTypeBackgroundColor(type: String) -> String {
+        return type + "TypeColor"
     }
    
     @ViewBuilder
     private var generalInfoView: some View {
-        VStack {
-            Divider()
+        VStack(spacing: 0) {
+            Text("General Info").font(.system(size: 14))
+                .padding(.top, 5)
+                .frame(maxWidth: .infinity)
+                .background(Color("startSearchbarGradient"))
+                .cornerRadius(12, corners: [.topLeft, .topRight])
+                .padding(.init(top: 0, leading: 5, bottom: 0, trailing: 5))
             
-            Text("General Info").font(.system(size: 22))
-            
-            HStack {
-                Text("Order").font(.system(size: 14))
-                Text(pokemon.order.description).padding(.leading).font(.system(size: 14))
-            }.padding(.top, 1)
-            
-            HStack {
-                Text("Weight").font(.system(size: 14))
-                Text(pokemon.weight.description).font(.system(size: 14))
+            VStack {
+                HStack {
+                    Text("Weight").font(.system(size: 14))
+                    Text(pokemon.weight.description).font(.system(size: 14))
+                }
+                
+                HStack {
+                    Text("Height").font(.system(size: 14))
+                    Text(pokemon.height.description).font(.system(size: 14))
+                }
             }
-            
-            HStack {
-                Text("Height").font(.system(size: 14))
-                Text(pokemon.height.description).font(.system(size: 14))
-            }
+            .padding()
+            .frame(maxWidth: .infinity)
+            .background(.white)
+            .overlay(
+                RoundedRectangle(cornerRadius: 12)
+                    .stroke(Color("startSearchbarGradient"), lineWidth: 10)
+            )
+            .cornerRadius(12, corners: [.bottomLeft, .bottomRight])
+            .padding(.init(top: 0, leading: 5, bottom: 0, trailing: 5))
         }
     }
     
     @ViewBuilder
     private var descriptionView: some View {
-        VStack {
-            Divider()
+        VStack(spacing: 0) {
+            Text("Description").font(.system(size: 14))
+                .padding(.top, 5)
+                .frame(maxWidth: .infinity)
+                .background(Color("startSearchbarGradient"))
+                .cornerRadius(12, corners: [.topLeft, .topRight])
+                .padding(.init(top: 0, leading: 5, bottom: 0, trailing: 5))
             
-            Text("Description").font(.system(size: 22))
-            
-            Text(viewModel.description)
-                .font(.system(size: 14))
-                .padding(.top, 1)
-                .padding(.trailing, 20)
-                .padding(.leading, 20)
+            VStack {
+                Text(viewModel.description)
+                    .font(.system(size: 14))
+                    .padding(.top, 1)
+                    .padding(.trailing, 20)
+                    .padding(.leading, 20)
+            }
+            .padding()
+            .frame(maxWidth: .infinity)
+            .background(.white)
+            .overlay(
+                RoundedRectangle(cornerRadius: 12)
+                    .stroke(Color("startSearchbarGradient"), lineWidth: 10)
+            )
+            .cornerRadius(12, corners: [.bottomLeft, .bottomRight])
+            .padding(.init(top: 0, leading: 5, bottom: 0, trailing: 5))
         }
     }
     
     @ViewBuilder
     private var abilitiesView: some View {
-        VStack {
-            Divider()
+        VStack(spacing: 0) {
+            Text("Abilities").font(.system(size: 14))
+                .padding(.top, 5)
+                .frame(maxWidth: .infinity)
+                .background(Color("startSearchbarGradient"))
+                .cornerRadius(12, corners: [.topLeft, .topRight])
+                .padding(.init(top: 0, leading: 5, bottom: 0, trailing: 5))
             
-            Text("Abilities").font(.system(size: 22))
-            
-            HStack {
-                ForEach(0..<pokemon.abilities.count) { i in
-                    Text(pokemon.abilities[i].ability.name)
-                        .font(.system(size: 14))
+            VStack {
+                HStack {
+                    ForEach(0..<pokemon.abilities.count) { i in
+                        Text(pokemon.abilities[i].ability.name)
+                            .underline()
+                            .font(.system(size: 14))
+                    }
                 }
             }
+            .padding()
+            .frame(maxWidth: .infinity)
+            .background(.white)
+            .overlay(
+                RoundedRectangle(cornerRadius: 12)
+                    .stroke(Color("startSearchbarGradient"), lineWidth: 10)
+            )
+            .cornerRadius(12, corners: [.bottomLeft, .bottomRight])
+            .padding(.init(top: 0, leading: 5, bottom: 0, trailing: 5))
         }
     }
     
     @ViewBuilder
     private var movesView: some View {
-        VStack {
-            Divider()
-            
-            Text("Moves").font(.system(size: 22))
+        VStack(spacing: 0) {
+            Text("Moves").font(.system(size: 14))
+                .padding(.top, 5)
+                .frame(maxWidth: .infinity)
+                .background(Color("startSearchbarGradient"))
+                .cornerRadius(12, corners: [.topLeft, .topRight])
+                .padding(.init(top: 0, leading: 5, bottom: 0, trailing: 5))
             
             VStack {
-                ForEach(0..<viewModel.moves.count, id: \.self) { i in
-                    VStack {
-                        HStack{
-                            Text(viewModel.moves[i].name)
-                                .font(.system(size: 14))
-                                .bold()
-                            Text(viewModel.moves[i].type)
-                                .font(.system(size: 14))
-                                .underline()
-                        }
-                        
-                        Text(viewModel.moves[i].description)
-                            .font(.system(size: 14))
-                    }.padding().background(.green).cornerRadius(12).padding()
+                NavigationLink {
+                    MovesView(moves: self.viewModel.moves)
+                } label: {
+                    Text("Tap here!").font(.system(size: 22))
                 }
             }
+            .padding()
+            .frame(maxWidth: .infinity)
+            .background(.white)
+            .overlay(
+                RoundedRectangle(cornerRadius: 12)
+                    .stroke(Color("startSearchbarGradient"), lineWidth: 10)
+            )
+            .cornerRadius(12, corners: [.bottomLeft, .bottomRight])
+            .padding(.init(top: 0, leading: 5, bottom: 0, trailing: 5))
         }
     }
     
@@ -178,3 +261,20 @@ struct PokemonDetailScreen_Previews: PreviewProvider {
     }
 }
  */
+
+extension View {
+    func cornerRadius(_ radius: CGFloat, corners: UIRectCorner) -> some View {
+        clipShape( RoundedCorner(radius: radius, corners: corners) )
+    }
+}
+
+struct RoundedCorner: Shape {
+
+    var radius: CGFloat = .infinity
+    var corners: UIRectCorner = .allCorners
+
+    func path(in rect: CGRect) -> Path {
+        let path = UIBezierPath(roundedRect: rect, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius))
+        return Path(path.cgPath)
+    }
+}
