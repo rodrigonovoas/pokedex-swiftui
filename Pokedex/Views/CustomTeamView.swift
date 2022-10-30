@@ -27,7 +27,20 @@ struct CustomTeamView: View {
     ]
 
     var body: some View {
-        VStack {
+        VStack(spacing: 0) {
+            
+            HStack {
+                Image("ic_team")
+                
+                Text("TEAM")
+                    .font(.custom("Pokemon-Pixel-Font", size: 26))
+            }
+            .padding(5)
+            .frame(maxWidth: .infinity)
+            .background(.white)
+            .cornerRadius(12)
+            .padding(.init(top: 0, leading: 40, bottom: 5, trailing: 40))
+            
             LazyVGrid(columns: columns) {
                 ForEach(pokes) { poke in
                     VStack{
@@ -77,7 +90,9 @@ struct CustomTeamView: View {
                 self.pokes = pokemonTeamHelper.getTeamFromLocalCache()
             }
             
-            Text("- Long press:  delete pokemon").font(.custom("Pokemon-Pixel-Font", size: 20))
+            Text("- Long press:  delete pokemon")
+                .padding(.top, 10)
+                .font(.custom("Pokemon-Pixel-Font", size: 20))
         }
         .alert(isPresented:$showDeleteAlert) {
                   Alert(

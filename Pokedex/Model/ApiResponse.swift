@@ -134,9 +134,11 @@ public struct TextEntries: Decodable {
 public struct PokemonMoveResponse: Decodable {
     var effectEntries: [EffectEntries]
     var type: PokemonAbility
+    var accuracy: Int
+    var power: Int
     
     enum CodingKeys: String, CodingKey {
-        case effectEntries = "effect_entries", type
+        case effectEntries = "effect_entries", type, accuracy, power
     }
 }
 

@@ -21,13 +21,21 @@ struct MovesView: View {
                             .bold()
                         
                         Text(moves[i].type)
-                            .font(.system(size: 14))
+                            .font(.system(size: 12))
                             .foregroundColor(Color.white)
                             .padding(.init(top: 4, leading: 8, bottom: 4, trailing: 8))
                             .background(Color(moves[i].type + "TypeColor"))
                             .cornerRadius(12)
                     }
                     .padding(.init(top: 5, leading: 0, bottom: 5, trailing: 0))
+                    
+                    HStack {
+                        Text("Power: ").font(.system(size: 14))
+                        Text(moves[i].power.description).font(.system(size: 14))
+                        
+                        Text("Accuracy: ").font(.system(size: 14))
+                        Text(moves[i].accuracy.description).font(.system(size: 14))
+                    }
                     
                     Text(moves[i].description)
                         .font(.system(size: 14))

@@ -17,7 +17,6 @@ struct HomeView: View {
     var body: some View {
         NavigationView {
             ZStack(alignment: .center) {
-                
                 if(viewModel.showNotFoundMessage){
                     pokemonNotFoundView
                 }
@@ -34,7 +33,7 @@ struct HomeView: View {
                     CustomTeamView()
                 }
             }
-            .navigationBarTitle("Home", displayMode: .inline)
+            .navigationBarTitle(Text("Home").font(.subheadline), displayMode: .inline)
             .background(LinearGradient(gradient: Gradient(colors: [Color("startBackgroundGradient"), Color("endBackgroundGradient")]), startPoint: .top, endPoint: .bottom))
         }.onAppear(){
             viewModel.getPokemonsFromAPI(from: 0)
@@ -49,7 +48,7 @@ struct HomeView: View {
                 }
                 
                 if(viewModel.activateSearchbar){
-                    SearchbarView(searchedPokemon: $searchedPokemon, viewModel: viewModel)
+                    SearchbarView(boxNumber: $boxNumber, searchedPokemon: $searchedPokemon, viewModel: viewModel)
                 }
             }
         }
@@ -104,6 +103,9 @@ struct HomeView: View {
                 ForEach(viewModel.pokemonHomeList) { poke in
                     NavigationLink {
                         DetailView(pokemon: poke)
+                            .onAppear(){
+                                viewModel.activateSearchbar = false
+                            }
                     } label: {
                         VStack {
                             AsyncImage(url: URL(string: poke.sprites.other.officialArtwork.front_default), transaction: .init(animation: .spring(response: 1.6))) { phase in
@@ -124,13 +126,6 @@ struct HomeView: View {
                                 }
                             }
                             .frame(height: 80)
-                            /*
-                            .overlay(
-                                Image("ic_cursor")
-                                    .resizable()
-                                      .frame(width: 20.0, height: 20.0)
-                                ,alignment: .bottomTrailing)
-                             */
                         }
                         .padding()
                         .overlay(
@@ -150,17 +145,30 @@ struct HomeView: View {
                 .onTapGesture {
                     viewModel.activateSearchbar = !viewModel.activateSearchbar
                 }
+            
             Image("ic_team").resizable().frame(width: 50, height: 50).padding(.leading, 10).foregroundColor(.white)
                 .onTapGesture {
                     showTeam = !showTeam
                 }
+            
             Spacer()
-            // Image("ic_ok").resizable().frame(width: 50, height: 50).padding(.trailing, 20).foregroundColor(.white)
+ 
+            if(!searchedPokemon.isEmpty){
+                Text("Clear filter")
+                    .foregroundColor(.white)
+                    .padding(.trailing, 20)
+                    .onTapGesture {
+                        searchedPokemon = ""
+                        boxNumber = 1
+                        viewModel.getPokemonsFromAPI(from: 0)
+                    }
+            }
         }
     }
     
     init() {
         searchedPokemon = ""
         viewModel = HomeViewModel()
+        UINavigationBar.appearance().titleTextAttributes = [.font : UIFont(name: "Pokemon-Pixel-Font", size: 30)!]
     }
 }

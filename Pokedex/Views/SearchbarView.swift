@@ -9,6 +9,7 @@ import Foundation
 import SwiftUI
 
 struct SearchbarView: View {
+    @Binding var boxNumber: Int
     @Binding var searchedPokemon: String
     @ObservedObject var viewModel: HomeViewModel
 
@@ -20,6 +21,7 @@ struct SearchbarView: View {
             
             TextField("", text: $searchedPokemon, onCommit: {
                 if(searchedPokemon.isEmpty){
+                    boxNumber = 1
                     viewModel.getPokemonsFromAPI(from: 0)
                 }else{
                     viewModel.getPokemonByName(name: searchedPokemon.lowercased())

@@ -12,6 +12,8 @@ public struct Move: Identifiable {
     public var id = UUID()
     var name: String
     var type: String
+    var accuracy: Int
+    var power: Int
     var description: String
 }
 
@@ -46,7 +48,7 @@ public class DetailViewModel: ObservableObject  {
             if(!move.effectEntries.isEmpty) {
                 moveDescription = move.effectEntries[0].shortEffect
             }
-            self?.moves.append(Move(name: name, type: move.type.name, description: moveDescription))
+            self?.moves.append(Move(name: name, type: move.type.name, accuracy: move.accuracy, power: move.power, description: moveDescription))
         })
         .disposed(by: disposeBag)
     }
