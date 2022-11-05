@@ -8,7 +8,7 @@
 import Foundation
 
 public enum PokemonTeamAdditionStatus {
-    case success, failed, alreadyAdded, fullTeam
+    case success, failed, alreadyAdded, teamIsFull
 }
 
 public class PokemonTeamHelper {
@@ -19,8 +19,6 @@ public class PokemonTeamHelper {
             do {
                 let decoder = JSONDecoder()
                 let pokemons = try decoder.decode([PokemonTeam].self, from: cachedPokemons)
-                
-                print("DEBUG-- getPokemonFromLocalCache retrieved pokes: " + pokemons.description)
                 
                 return pokemons
             } catch {
@@ -69,7 +67,7 @@ public class PokemonTeamHelper {
         }
         
         if(pokes.count >= 6){
-            return PokemonTeamAdditionStatus.fullTeam
+            return PokemonTeamAdditionStatus.teamIsFull
         }
         
         do {

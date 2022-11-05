@@ -35,14 +35,14 @@ public class DetailViewModel: ObservableObject  {
     func getPokemonDescriptionFromAPI(endpoint: String) {
         repository.getPokemonDescription(endpoint: endpoint, pokemonDescriptionCompletitionHandler: { pokemonSpecieResponse, error in
             if let pokemonSpecieResponse = pokemonSpecieResponse {
-                self.description = self.textUtils.removeSpacesFromText(description: pokemonSpecieResponse.flavor_text_entries[0].flavor_text)
+                self.description = self.textUtils.removeBlankSpacesFromText(description: pokemonSpecieResponse.flavor_text_entries[0].flavor_text)
             }
         })
     }
     
     func getPokemonMoveFromApi(url: String, name: String) {
-        pokemonMoves = repository.getPokemonMoveDetail(url: url)
-        
+        pokemonMoves = repository.getPokemonMoveDetailByUrl(url: url)
+
         pokemonMoves?.subscribe(onNext: { [weak self] (move) in
             var moveDescription = ""
             if(!move.effectEntries.isEmpty) {

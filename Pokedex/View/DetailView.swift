@@ -206,7 +206,7 @@ struct DetailView: View {
         switch addingStatus {
         case PokemonTeamAdditionStatus.alreadyAdded:
             self.uiMessage = "This pokemon is already on your team!"
-        case PokemonTeamAdditionStatus.fullTeam:
+        case PokemonTeamAdditionStatus.teamIsFull:
             self.uiMessage = "You can't add more pokemons to your team! You must remove one of them."
         case PokemonTeamAdditionStatus.success:
             self.uiMessage = "Pokemon added to your team!"

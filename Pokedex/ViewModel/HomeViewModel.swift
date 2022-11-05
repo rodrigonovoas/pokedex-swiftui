@@ -39,19 +39,19 @@ public class HomeViewModel: ObservableObject {
         pokemons?.subscribe(onNext: { [weak self] (list) in
             for i in 0...(list.count-1) {
                 if(i == -1) { return }
-                self?.getAndAppendPokemonDetailToList(list: list, i: i)
+                self?.addPokemonDetailToList(list: list, i: i)
             }
         })
         .disposed(by: disposeBag)
     }
     
-    private func getAndAppendPokemonDetailToList(list: [PokemonResponse], i: Int) {
+    private func addPokemonDetailToList(list: [PokemonResponse], i: Int) {
         var pokeDetail: Observable<PokemonDetailResponse>?
-        pokeDetail = repository.getPokemonDetail(url: list[i].url)
+        pokeDetail = repository.getPokemonDetailByUrl(url: list[i].url)
         
         pokeDetail?.subscribe(onNext: { [weak self] (detail) in
             self?.pokemonHomeList.append(detail)
-            self?.repository.getPokemonDetail(url: list[i].url)
+            self?.repository.getPokemonDetailByUrl(url: list[i].url)
             
             if(self?.pokemonHomeList.count == list.count){
                 self?.pokemonHomeList.sort(by: { $0.order < $1.order })
@@ -61,7 +61,7 @@ public class HomeViewModel: ObservableObject {
     }
     
     func getPokemonByName(name: String) {
-        repository.getPokemonByName(name: name, pokemonDescriptionCompletitionHandler: { pokemonDetail, error in
+        repository.getPokemonDetailByName(name: name, pokemonDescriptionCompletitionHandler: { pokemonDetail, error in
             self.pokemonHomeList.removeAll()
             
             if(pokemonDetail == nil) {

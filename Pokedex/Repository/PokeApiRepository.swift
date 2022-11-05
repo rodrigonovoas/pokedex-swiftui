@@ -23,7 +23,6 @@ struct PokeApiRepository: Repository {
             
             guard let url = URL(string: urlEndpoint) else {
                 return Disposables.create()
-                // fatalError("Missing URL")
             }
             
             let urlRequest = URLRequest(url: url)
@@ -53,16 +52,14 @@ struct PokeApiRepository: Repository {
             }
             
             dataTask.resume()
-            
             return Disposables.create {}
         }
     }
 
-    func getPokemonDetail(url: String) -> Observable<PokemonDetailResponse> {
+    func getPokemonDetailByUrl(url: String) -> Observable<PokemonDetailResponse> {
         return Observable<PokemonDetailResponse>.create { observer in
             guard let url = URL(string: url) else {
                 return Disposables.create()
-                // fatalError("Missing URL")
             }
             
             let urlRequest = URLRequest(url: url)
@@ -81,7 +78,6 @@ struct PokeApiRepository: Repository {
                         do {
                             let pokemonDetail = try JSONDecoder().decode(PokemonDetailResponse.self, from: data)
                             observer.onNext(pokemonDetail)
-                            
                         } catch let error {
                             print("Error decoding: ", error)
                             observer.onError(error)
@@ -98,7 +94,7 @@ struct PokeApiRepository: Repository {
     
     func getPokemonDescription(endpoint: String, pokemonDescriptionCompletitionHandler: @escaping (PokemonSpecieResponse?, Error?) -> Void) {
         guard let url = URL(string: endpoint) else { fatalError("Missing URL") }
-        
+
         let urlRequest = URLRequest(url: url)
         
         let dataTask = URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
@@ -126,7 +122,7 @@ struct PokeApiRepository: Repository {
         dataTask.resume()
     }
     
-    func getPokemonByName(name: String, pokemonDescriptionCompletitionHandler: @escaping (PokemonDetailResponse?, Error?) -> Void) {
+    func getPokemonDetailByName(name: String, pokemonDescriptionCompletitionHandler: @escaping (PokemonDetailResponse?, Error?) -> Void) {
         let urlEndpoint = baseURL + "/pokemon/" + name
         
         guard let url = URL(string: urlEndpoint) else {
@@ -162,11 +158,10 @@ struct PokeApiRepository: Repository {
         dataTask.resume()
     }
     
-    func getPokemonMoveDetail(url: String) -> Observable<PokemonMoveResponse> {
+    func getPokemonMoveDetailByUrl(url: String) -> Observable<PokemonMoveResponse> {
         return Observable<PokemonMoveResponse>.create { observer in
             guard let url = URL(string: url) else {
                 return Disposables.create()
-                // fatalError("Missing URL")
             }
             
             let urlRequest = URLRequest(url: url)
@@ -195,7 +190,6 @@ struct PokeApiRepository: Repository {
             }
             
             dataTask.resume()
-            
             return Disposables.create {}
         }
     }

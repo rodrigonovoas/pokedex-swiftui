@@ -10,7 +10,7 @@ import RxSwift
 
 protocol Repository {
     func getPokemonList(from: Int) -> Observable<[PokemonResponse]>
-    func getPokemonDetail(url: String) -> Observable<PokemonDetailResponse>
+    func getPokemonDetailByUrl(url: String) -> Observable<PokemonDetailResponse>
     func getPokemonDescription(endpoint: String, pokemonDescriptionCompletitionHandler: @escaping (PokemonSpecieResponse?, Error?) -> Void)
-    func getPokemonByName(name: String, pokemonDescriptionCompletitionHandler: @escaping (PokemonDetailResponse?, Error?) -> Void)
+    func getPokemonDetailByName(name: String, pokemonDescriptionCompletitionHandler: @escaping (PokemonDetailResponse?, Error?) -> Void)
 }
