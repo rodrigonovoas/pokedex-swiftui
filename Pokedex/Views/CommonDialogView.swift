@@ -15,13 +15,14 @@ struct CommonDialogView: View {
     var body: some View {
         VStack {
             Text(message)
-                .font(.custom("Pokemon-Pixel-Font", size: 30))
+                .withCustomFont(size: 30)
             
             HStack {
                 Image("ic_continue")
                     .resizable()
                     .frame(width: 40, height: 40)
                     .onTapGesture {
+                        message = ""
                         showCommonDialog = false
                     }
             }

@@ -12,7 +12,6 @@ public enum PokemonTeamAdditionStatus {
 }
 
 public class PokemonTeamHelper {
-    
     let key = "POKEMON_TEAM_POKEDEX"
     
     public func getTeamFromLocalCache() -> [PokemonTeam] {

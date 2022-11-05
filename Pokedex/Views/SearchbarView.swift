@@ -16,7 +16,7 @@ struct SearchbarView: View {
     var body: some View {
         VStack {
             Text("Enter pokemon name")
-                .font(.custom("Pokemon-Pixel-Font", size: 24))
+                .withCustomFont(size: 24)
                 .padding(.leading, 18)
             
             TextField("", text: $searchedPokemon, onCommit: {
@@ -31,9 +31,7 @@ struct SearchbarView: View {
             
         }
         .textFieldStyle(RoundedBorderTextFieldStyle())
-        .padding()
-        .background(Color("endBackgroundGradient"))
-        .cornerRadius(12)
+        .withRoundedCornersAndPadding(backgroundColor: Color("endBackgroundGradient"))
         .padding(.init(top: 0, leading: 20, bottom: 0, trailing: 20))
     }
 }

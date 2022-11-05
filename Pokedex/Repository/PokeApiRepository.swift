@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import Combine
 import RxSwift
 
 struct PokeApiRepository: Repository {

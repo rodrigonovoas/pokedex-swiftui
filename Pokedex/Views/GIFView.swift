@@ -5,6 +5,10 @@
 //  Created by Rodrigo Novoa Salgado on 13/10/22.
 //
 
+/**
+ External custom view to play animated GIFs along the project
+ */
+
 import SwiftUI
 import FLAnimatedImage
 

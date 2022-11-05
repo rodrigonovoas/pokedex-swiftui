@@ -52,12 +52,10 @@ struct CustomTeamView: View {
             Image("ic_team")
             
             Text("TEAM")
-                .font(.custom("Pokemon-Pixel-Font", size: 26))
+                .withCustomFont(size: 26)
         }
         .padding(5)
-        .frame(maxWidth: .infinity)
-        .background(.white)
-        .cornerRadius(12)
+        .withRoundedCornersAndFullWidthStyle(backgroundColor: .white)
         .padding(.init(top: 0, leading: 40, bottom: 5, trailing: 40))
     }
     
@@ -66,7 +64,7 @@ struct CustomTeamView: View {
         LazyVGrid(columns: columns) {
             ForEach(pokes) { poke in
                 VStack{
-                    Text(poke.name).font(.custom("Pokemon-Pixel-Font", size: 20))
+                    Text(poke.name).withCustomFont(size: 20)
                     
                     AsyncImage(url: URL(string: poke.imageUrl), transaction: .init(animation: .spring(response: 1.6))) { phase in
                         switch phase {
@@ -120,8 +118,8 @@ struct CustomTeamView: View {
     @ViewBuilder
     private var bottomMessagesView: some View {
         Text("- Long press:  delete pokemon")
+            .withCustomFont(size: 20)
             .padding(.top, 10)
-            .font(.custom("Pokemon-Pixel-Font", size: 20))
     }
 }
 

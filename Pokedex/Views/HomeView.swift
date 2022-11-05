@@ -34,7 +34,7 @@ struct HomeView: View {
                 }
             }
             .navigationBarTitle(Text("Home").font(.subheadline), displayMode: .inline)
-            .background(LinearGradient(gradient: Gradient(colors: [Color("startBackgroundGradient"), Color("endBackgroundGradient")]), startPoint: .top, endPoint: .bottom))
+            .withGradientBackgroundStyle(startColor: "startBackgroundGradient", endColor: "endBackgroundGradient")
         }.onAppear(){
             viewModel.getPokemonsFromAPI(from: 0)
         }.overlay(){
@@ -44,7 +44,7 @@ struct HomeView: View {
                         .frame(width: 75, height: 50)
                         .padding()
                     
-                    Text("LOADING...").font(.custom("Pokemon-Pixel-Font", size: 20)).onAppear(){ viewModel.activateSearchbar = false }
+                    Text("LOADING...").withCustomFont(size: 20).onAppear(){ viewModel.activateSearchbar = false }
                 }
                 
                 if(viewModel.activateSearchbar){
@@ -67,7 +67,8 @@ struct HomeView: View {
     @ViewBuilder
     private var headerBoxView: some View {
         HStack {
-            Image("ic_left_arrow").resizable().frame(width: 30, height: 30)
+            Image("ic_left_arrow")
+                .topIconSizeStyle()
                 .padding(.leading, 10)
                 .onTapGesture {
                     if(viewModel.getFromNumber() >= 12){
@@ -77,12 +78,13 @@ struct HomeView: View {
                 }
             
             Text("BOX " + boxNumber.description)
+                .withCustomFont(size: 24)
                 .frame(maxWidth: .infinity, maxHeight: 30)
                 .background(Rectangle().fill(Color.white).cornerRadius(4))
                 .padding(.init(top: 0, leading: 10, bottom: 0, trailing: 10))
-                .font(.custom("Pokemon-Pixel-Font", size: 24))
             
-            Image("ic_right_arrow").resizable().frame(width: 30, height: 30)
+            Image("ic_right_arrow")
+                .topIconSizeStyle()
                 .padding(.trailing, 10)
                 .onTapGesture {
                     viewModel.getPokemonsFromAPI(from: viewModel.getFromNumber() + 12)
@@ -129,7 +131,7 @@ struct HomeView: View {
                         .padding()
                         .overlay(
                             Text("\(poke.order)  \(poke.name)")
-                                .font(.custom("Pokemon-Pixel-Font", size: 16))
+                                .withCustomFont(size: 16)
                             ,alignment: .bottom)
                     }
                 }
@@ -140,12 +142,12 @@ struct HomeView: View {
     @ViewBuilder
     private var bottomView: some View {
         HStack {
-            Image("ic_search").resizable().frame(width: 50, height: 50).padding(.leading, 20).foregroundColor(.white)
+            Image("ic_search").bottomIconSizeStyle().padding(.leading, 20).foregroundColor(.white)
                 .onTapGesture {
                     viewModel.activateSearchbar = !viewModel.activateSearchbar
                 }
             
-            Image("ic_team").resizable().frame(width: 50, height: 50).padding(.leading, 10).foregroundColor(.white)
+            Image("ic_team").bottomIconSizeStyle().padding(.leading, 10).foregroundColor(.white)
                 .onTapGesture {
                     showTeam = !showTeam
                 }
@@ -169,5 +171,17 @@ struct HomeView: View {
         searchedPokemon = ""
         viewModel = HomeViewModel()
         UINavigationBar.appearance().titleTextAttributes = [.font : UIFont(name: "Pokemon-Pixel-Font", size: 30)!]
+    }
+}
+
+private extension Image {
+    func topIconSizeStyle() -> some View  {
+        self.resizable()
+            .frame(width: 30, height: 30)
+    }
+    
+    func bottomIconSizeStyle() -> some View  {
+        self.resizable()
+            .frame(width: 50, height: 50)
     }
 }

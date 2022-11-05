@@ -17,8 +17,7 @@ struct MovesView: View {
                 VStack {
                     HStack{
                         Text(moves[i].name)
-                            .font(.system(size: 14))
-                            .bold()
+                            .withNormalTextAndBoldStyle()
                         
                         Text(moves[i].type)
                             .font(.system(size: 12))
@@ -30,21 +29,19 @@ struct MovesView: View {
                     .padding(.init(top: 5, leading: 0, bottom: 0, trailing: 0))
                     
                     HStack {
-                        Text("Power: ").font(.system(size: 14))
-                        Text(moves[i].power.description).font(.system(size: 14))
+                        Text("Power: ").withNormalTextStyle()
+                        Text(moves[i].power.description).withNormalTextStyle()
                         
-                        Text("Accuracy: ").font(.system(size: 14))
-                        Text(moves[i].accuracy.description).font(.system(size: 14))
+                        Text("Accuracy: ").withNormalTextStyle()
+                        Text(moves[i].accuracy.description).withNormalTextStyle()
                     }
                     
                     Text(moves[i].description)
-                        .font(.system(size: 14))
+                        .withNormalTextStyle()
                         .padding(.top, 5)
                 }
                 .padding()
-                .frame(maxWidth: .infinity)
-                .background(Color("startSearchbarGradient"))
-                .cornerRadius(12)
+                .withRoundedCornersAndFullWidthStyle(backgroundColor: Color("startSearchbarGradient"))
                 .padding(.init(top: 0, leading: 10, bottom: 0, trailing: 10))
             }
         }
