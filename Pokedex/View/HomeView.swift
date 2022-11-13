@@ -14,6 +14,8 @@ struct HomeView: View {
     @State private var boxNumber: Int = 1
     @State private var showTeam: Bool = false
     
+    private let pageNumber = 15
+    
     var body: some View {
         NavigationView {
             ZStack(alignment: .center) {
@@ -71,8 +73,8 @@ struct HomeView: View {
                 .topIconSizeStyle()
                 .padding(.leading, 10)
                 .onTapGesture {
-                    if(viewModel.getFromNumber() >= 12){
-                        viewModel.getPokemonsFromAPI(from: viewModel.getFromNumber() - 12)
+                    if(viewModel.getFromNumber() >= pageNumber){
+                        viewModel.getPokemonsFromAPI(from: viewModel.getFromNumber() - pageNumber)
                         boxNumber -= 1
                     }
                 }
@@ -87,7 +89,7 @@ struct HomeView: View {
                 .topIconSizeStyle()
                 .padding(.trailing, 10)
                 .onTapGesture {
-                    viewModel.getPokemonsFromAPI(from: viewModel.getFromNumber() + 12)
+                    viewModel.getPokemonsFromAPI(from: viewModel.getFromNumber() + pageNumber)
                     boxNumber += 1
                 }
         }
@@ -100,7 +102,7 @@ struct HomeView: View {
                 GridItem(.fixed(100)),
                 GridItem(.fixed(100)),
                 GridItem(.fixed(100))
-            ], spacing: 4, content: {
+            ], spacing: 5, content: {
                 ForEach(viewModel.pokemonHomeList) { poke in
                     NavigationLink {
                         DetailView(pokemon: poke)
@@ -126,17 +128,25 @@ struct HomeView: View {
                                         .foregroundColor(.red)
                                 }
                             }
-                            .frame(height: 80)
+                            .frame(height: 65)
                         }
                         .padding()
                         .overlay(
-                            Text("\(poke.pokemonId)  \(poke.name)")
+                            Text("#\(poke.pokemonId)  \(poke.name)")
                                 .withCustomFont(size: 16)
+                                .foregroundColor(Color.white)
                             ,alignment: .bottom)
+                        .background(Color(getPokemonTypeBackgroundColor(type: poke.types[0].type.name)))
+                        .cornerRadius(12)
+                        .padding(5)
                     }
                 }
             })
         }
+    }
+    
+    private func getPokemonTypeBackgroundColor(type: String) -> String {
+        return type + "TypeColor"
     }
     
     @ViewBuilder

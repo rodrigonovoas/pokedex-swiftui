@@ -19,7 +19,7 @@ struct PokeApiRepository: Repository {
     func getPokemonList(from: Int) -> Observable<[PokemonResponse]> {
         return Observable<[PokemonResponse]>.create { observer in
             let getPokemonsBaseUrl = baseURL + PokeApiEndpoints.pokemonList.rawValue
-            let urlEndpoint = getPokemonsBaseUrl + "?limit=12&offset="+from.description
+            let urlEndpoint = getPokemonsBaseUrl + "?limit=15&offset="+from.description
             
             guard let url = URL(string: urlEndpoint) else {
                 return Disposables.create()

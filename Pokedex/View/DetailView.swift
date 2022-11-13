@@ -166,7 +166,10 @@ struct DetailView: View {
                 NavigationLink {
                     MovesView(moves: self.viewModel.moves)
                 } label: {
-                    Text("Tap here!").font(.system(size: 22))
+                    HStack {
+                        Image("ic_moves").resizable().frame(width: 35, height: 35)
+                        Text("List").font(.system(size: 22))
+                    }
                 }
             }
             .padding()
@@ -185,10 +188,9 @@ struct DetailView: View {
         .background(.white)
         .overlay(
             RoundedRectangle(cornerRadius: 12)
-                .stroke(LinearGradient(gradient: Gradient(colors: [Color("startTeamBackgroundColor"), Color("endTeamBackgroundColor")]), startPoint: .top, endPoint: .bottom), lineWidth: 8)
+                .stroke(Color("startSearchbarGradient"), lineWidth: 8)
         )
         .cornerRadius(12)
-        .padding(.bottom, 20)
         .onTapGesture {
             let teamIsNotFull = self.pokemonTeamHelper.addPokemonToTeamList(pokemonName: self.pokemon.name, pokemonImage: self.pokemon.sprites.other.officialArtwork.front_default)
             
