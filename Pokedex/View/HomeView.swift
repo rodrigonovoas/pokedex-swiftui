@@ -50,7 +50,7 @@ struct HomeView: View {
                 }
                 
                 if(viewModel.activateSearchbar){
-                    SearchbarView(boxNumber: $boxNumber, searchedPokemon: $searchedPokemon, viewModel: viewModel)
+                    SearchbarView(boxNumber: $boxNumber, searchedPokemon: $searchedPokemon, showView: $viewModel.activateSearchbar, viewModel: viewModel)
                 }
             }
         }

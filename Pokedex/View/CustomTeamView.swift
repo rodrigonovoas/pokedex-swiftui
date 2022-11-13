@@ -30,6 +30,10 @@ struct CustomTeamView: View {
     var body: some View {
         VStack(spacing: 0) {
             titleView
+                .onTapGesture {
+                    self.showView = false
+                }
+                .zIndex(10)
             
             gridView
             
@@ -49,10 +53,19 @@ struct CustomTeamView: View {
     @ViewBuilder
     private var titleView: some View {
         HStack {
+            Spacer()
+            
             Image("ic_team")
             
             Text("TEAM")
                 .withCustomFont(size: 26)
+            
+            Spacer()
+            
+            Image("ic_cancel")
+                .resizable()
+                .frame(width: 15, height: 15)
+                .padding(.trailing, 5)
         }
         .padding(5)
         .withRoundedCornersAndFullWidthStyle(backgroundColor: .white)
@@ -109,9 +122,6 @@ struct CustomTeamView: View {
         .padding(.init(top: 0, leading: 40, bottom: 0, trailing: 40))
         .onAppear(){
             self.pokes = pokemonTeamHelper.getTeamFromLocalCache()
-        }
-        .onTapGesture {
-            self.showView = false
         }
     }
     
