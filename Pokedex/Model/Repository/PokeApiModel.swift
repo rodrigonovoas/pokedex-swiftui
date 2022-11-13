@@ -30,6 +30,7 @@ public struct PokemonResponse: Identifiable, Codable {
 /// # Pokemon List from API
 public struct PokemonDetailResponse: Decodable, Identifiable {
     public var id = UUID()
+    var pokemonId: Int
     var name: String
     var order: Int
     var species: PokemonSpecies
@@ -42,7 +43,7 @@ public struct PokemonDetailResponse: Decodable, Identifiable {
     var height: Int
     
     enum CodingKeys: String, CodingKey {
-        case name, order, sprites, species, types, abilities, stats, moves, weight, height
+        case pokemonId = "id", name, order, sprites, species, types, abilities, stats, moves, weight, height
     }
 }
 

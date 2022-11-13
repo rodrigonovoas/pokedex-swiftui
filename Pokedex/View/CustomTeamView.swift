@@ -117,8 +117,10 @@ struct CustomTeamView: View {
     
     @ViewBuilder
     private var bottomMessagesView: some View {
-        Text("- Long press:  delete pokemon")
+        Text("- Long press: delete pokemon")
             .withCustomFont(size: 20)
+            .padding(5)
+            .background(Color.white)
             .padding(.top, 10)
     }
 }

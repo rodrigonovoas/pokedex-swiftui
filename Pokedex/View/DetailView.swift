@@ -49,7 +49,7 @@ struct DetailView: View {
         VStack {
             HStack {
                 Image("ic_pokeball").resizable().frame(width: 25, height: 25)
-                Text("N. " + pokemon.order.description).padding(.leading).font(.system(size: 16))
+                Text("N. " + pokemon.pokemonId.description).padding(.leading).font(.system(size: 16))
                 Text(pokemon.name).font(.system(size: 16)).bold()
             }
             .padding(.init(top: 5, leading: 0, bottom: 5, trailing: 0))

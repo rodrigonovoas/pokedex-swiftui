@@ -130,7 +130,7 @@ struct HomeView: View {
                         }
                         .padding()
                         .overlay(
-                            Text("\(poke.order)  \(poke.name)")
+                            Text("\(poke.pokemonId)  \(poke.name)")
                                 .withCustomFont(size: 16)
                             ,alignment: .bottom)
                     }
