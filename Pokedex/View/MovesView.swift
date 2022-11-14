@@ -10,21 +10,22 @@ import SwiftUI
 struct MovesView: View {
     @State var moves: [Move] = []
     var body: some View {
-        Text("Moves").font(.system(size: 22))
+        Text("Moves").bold().font(.system(size: 26))
         
         ScrollView {
             ForEach(0..<moves.count, id: \.self) { i in
                 VStack {
                     HStack{
+                        Image("ic_move_detail").resizable().frame(width: 30, height: 30)
+                        
                         Text(moves[i].name)
                             .underline()
-                            .withNormalTextAndBoldStyle()
+                            .bold()
+                            .font(.system(size: 18))
                         
                         Text(moves[i].type)
                             .font(.system(size: 12))
                             .foregroundColor(Color.white)
-                            // .background(Color(moves[i].type + "TypeColor"))
-                            // .cornerRadius(12)
                     }
                     
                     HStack {
