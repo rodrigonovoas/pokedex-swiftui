@@ -18,7 +18,7 @@ struct MovesView: View {
                     HStack{
                         Image("ic_move_detail").resizable().frame(width: 30, height: 30)
                         
-                        Text(moves[i].name)
+                        Text(moves[i].name.capitalized)
                             .underline()
                             .bold()
                             .font(.system(size: 18))

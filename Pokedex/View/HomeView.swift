@@ -132,7 +132,7 @@ struct HomeView: View {
                         }
                         .padding()
                         .overlay(
-                            Text("#\(poke.pokemonId)  \(poke.name)")
+                            Text("#\(poke.pokemonId)  \(poke.name.capitalized)")
                                 .withCustomFont(size: 16)
                                 .foregroundColor(Color.white)
                             ,alignment: .bottom)

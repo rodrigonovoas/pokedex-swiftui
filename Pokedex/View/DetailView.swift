@@ -50,7 +50,7 @@ struct DetailView: View {
             HStack {
                 Image("ic_pokeball").resizable().frame(width: 25, height: 25)
                 Text("N. " + pokemon.pokemonId.description).padding(.leading).font(.system(size: 16))
-                Text(pokemon.name).font(.system(size: 16)).bold()
+                Text(pokemon.name.capitalized).font(.system(size: 16)).bold()
             }
             .padding(.init(top: 5, leading: 0, bottom: 5, trailing: 0))
             .withRoundedCornersAndFullWidthStyle(backgroundColor: Color("startSearchbarGradient"))
@@ -144,7 +144,7 @@ struct DetailView: View {
             VStack {
                 HStack {
                     ForEach(0..<pokemon.abilities.count) { i in
-                        Text(pokemon.abilities[i].ability.name)
+                        Text(pokemon.abilities[i].ability.name.capitalized)
                             .withNormalTextAndUnderlinedStyle()
                     }
                 }
@@ -192,7 +192,7 @@ struct DetailView: View {
         )
         .cornerRadius(12)
         .onTapGesture {
-            let teamIsNotFull = self.pokemonTeamHelper.addPokemonToTeamList(pokemonName: self.pokemon.name, pokemonImage: self.pokemon.sprites.other.officialArtwork.front_default)
+            let teamIsNotFull = self.pokemonTeamHelper.addPokemonToTeamList(pokemonName: self.pokemon.name, pokemonImage: self.pokemon.sprites.front_default)
             
             showUiMessageAfterAddingPokemon(addingStatus: teamIsNotFull)
         }
