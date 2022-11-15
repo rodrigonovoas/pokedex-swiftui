@@ -16,28 +16,17 @@ struct MovesView: View {
             ForEach(0..<moves.count, id: \.self) { i in
                 VStack {
                     HStack{
-                        Image("ic_move_detail").resizable().frame(width: 30, height: 30)
-                        
                         Text(moves[i].name.capitalized)
                             .underline()
                             .bold()
                             .font(.system(size: 18))
                         
-                        Text(moves[i].type)
-                            .font(.system(size: 12))
-                            .foregroundColor(Color.white)
-                    }
-                    
-                    HStack {
-                        Text("Power: ").withNormalTextAndBoldStyle()
+                        Image("ic_power").resizable().frame(width: 15, height: 15)
                         Text(moves[i].power.description).withNormalTextStyle()
                         
-                        Text("Accuracy: ").withNormalTextAndBoldStyle()
+                        Image("ic_accuracy").resizable().frame(width: 15, height: 15)
                         Text(moves[i].accuracy.description).withNormalTextStyle()
                     }
-                    .padding(.top, 2)
-                    
-                    Divider()
                     
                     Text(moves[i].description)
                         .withNormalTextStyle()
@@ -45,6 +34,7 @@ struct MovesView: View {
                 }
                 .padding(.init(top: 10, leading: 20, bottom: 20, trailing: 20))
                 .withRoundedCornersAndFullWidthStyle(backgroundColor: Color(moves[i].type + "TypeColor"))
+                .shadow(radius: 2)
                 .padding(.init(top: 0, leading: 10, bottom: 0, trailing: 10))
             }
         }
