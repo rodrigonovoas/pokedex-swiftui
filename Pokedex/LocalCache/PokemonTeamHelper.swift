@@ -29,7 +29,7 @@ public class PokemonTeamHelper {
         return []
     }
     
-    public func deletePokemon(pokemonName: String, currentTeam: [PokemonTeam]) -> [PokemonTeam] {
+    public func deletePokemonFromList(pokemonName: String, currentTeam: [PokemonTeam]) -> [PokemonTeam] {
         var position = 0
         
         for pokemon in currentTeam {
@@ -59,7 +59,7 @@ public class PokemonTeamHelper {
         }
     }
     
-    public func addPokemonToTeamList(pokemonName: String, pokemonImage: String) -> PokemonTeamAdditionStatus {
+    public func addPokemonToList(pokemonName: String, pokemonImage: String) -> PokemonTeamAdditionStatus {
         var pokes = getTeamFromLocalCache()
         
         if(isPokemonAlreadyAdded(name: pokemonName, pokemonTeam: pokes)) {

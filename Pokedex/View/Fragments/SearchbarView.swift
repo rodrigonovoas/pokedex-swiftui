@@ -45,10 +45,14 @@ struct SearchbarView: View {
     
     private func searchPokemon(){
         if(searchedPokemon.isEmpty){
-            boxNumber = 1
-            viewModel.getPokemonsFromAPI(from: 0)
+            resetPokemonList()
         }else{
-            viewModel.getPokemonByName(name: searchedPokemon.lowercased())
+            viewModel.getPokemonDetailByName(name: searchedPokemon.lowercased())
         }
+    }
+    
+    private func resetPokemonList(){
+        boxNumber = 1
+        viewModel.getPokemonsFromAPI(from: 0)
     }
 }

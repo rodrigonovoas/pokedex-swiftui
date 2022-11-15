@@ -9,7 +9,10 @@ import Foundation
 import RxSwift
 
 struct PokeApiRepository: Repository {
+    private let pokemonListLimit = 15
     private let baseURL: String = "https://pokeapi.co/api/v2"
+    private let listEndpoint = "/pokemon"
+    private let detailEndpoint = "/pokemon/"
     let session: URLSession
     
     init(session: URLSession) {
@@ -18,16 +21,15 @@ struct PokeApiRepository: Repository {
     
     func getPokemonList(from: Int) -> Observable<[PokemonResponse]> {
         return Observable<[PokemonResponse]>.create { observer in
-            let getPokemonsBaseUrl = baseURL + PokeApiEndpoints.pokemonList.rawValue
-            let urlEndpoint = getPokemonsBaseUrl + "?limit=15&offset="+from.description
+            let getPokemonsBaseUrl = baseURL + listEndpoint
+            let urlEndpoint = getPokemonsBaseUrl + "?limit=" + pokemonListLimit.description + "&offset="+from.description
             
             guard let url = URL(string: urlEndpoint) else {
                 return Disposables.create()
             }
             
             let urlRequest = URLRequest(url: url)
-            
-            let dataTask = URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
+            let dataTask = self.session.dataTask(with: urlRequest) { (data, response, error) in
                 if let error = error {
                     print("Request error: ", error)
                     return
@@ -52,7 +54,7 @@ struct PokeApiRepository: Repository {
             }
             
             dataTask.resume()
-            return Disposables.create {}
+            return Disposables.create()
         }
     }
 
@@ -63,8 +65,7 @@ struct PokeApiRepository: Repository {
             }
             
             let urlRequest = URLRequest(url: url)
-            
-            let dataTask = URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
+            let dataTask = self.session.dataTask(with: urlRequest) { (data, response, error) in
                 if let error = error {
                     print("Request error: ", error)
                     return
@@ -88,51 +89,20 @@ struct PokeApiRepository: Repository {
             
             dataTask.resume()
             
-            return Disposables.create {}
+            return Disposables.create()
         }
     }
     
-    func getPokemonDescription(endpoint: String, pokemonDescriptionCompletitionHandler: @escaping (PokemonSpecieResponse?, Error?) -> Void) {
-        guard let url = URL(string: endpoint) else { fatalError("Missing URL") }
-
-        let urlRequest = URLRequest(url: url)
-        
-        let dataTask = URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
-            if let error = error {
-                print("Request error: ", error)
-                return
-            }
-            
-            guard let response = response as? HTTPURLResponse else { return }
-            
-            if response.statusCode == 200 {
-                guard let data = data else { return }
-                DispatchQueue.main.async {
-                    do {
-                        let pokemonSpecieDetail = try JSONDecoder().decode(PokemonSpecieResponse.self, from: data)
-                        pokemonDescriptionCompletitionHandler(pokemonSpecieDetail, nil)
-                    } catch let error {
-                        pokemonDescriptionCompletitionHandler(nil, error)
-                        print("Error decoding: ", error)
-                    }
-                }
-            }
-        }
-        
-        dataTask.resume()
-    }
-    
-    func getPokemonDetailByName(name: String, pokemonDescriptionCompletitionHandler: @escaping (PokemonDetailResponse?, Error?) -> Void) {
-        let urlEndpoint = baseURL + "/pokemon/" + name
+    func getPokemonDetailByName(name: String, completionHandler: @escaping (PokemonDetailResponse?, Error?) -> Void) {
+        let urlEndpoint = baseURL + detailEndpoint + name
         
         guard let url = URL(string: urlEndpoint) else {
-            pokemonDescriptionCompletitionHandler(nil, nil)
+            completionHandler(nil, nil)
             return
         }
 
         let urlRequest = URLRequest(url: url)
-        
-        let dataTask = URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
+        let dataTask = self.session.dataTask(with: urlRequest) { (data, response, error) in
             if let error = error {
                 print("Request error: ", error)
                 return
@@ -145,19 +115,49 @@ struct PokeApiRepository: Repository {
                 DispatchQueue.main.async {
                     do {
                         let pokemonDetail = try JSONDecoder().decode(PokemonDetailResponse.self, from: data)
-                        pokemonDescriptionCompletitionHandler(pokemonDetail, nil)
+                        completionHandler(pokemonDetail, nil)
                     } catch let error {
-                        pokemonDescriptionCompletitionHandler(nil, error)
+                        completionHandler(nil, error)
                     }
                 }
             } else{
-                pokemonDescriptionCompletitionHandler(nil, nil)
+                completionHandler(nil, nil)
             }
         }
         
         dataTask.resume()
     }
     
+    
+    func getPokemonDescription(endpoint: String, completionHandler: @escaping (PokemonSpecieResponse?, Error?) -> Void) {
+        guard let url = URL(string: endpoint) else { fatalError("Missing URL") }
+
+        let urlRequest = URLRequest(url: url)
+        let dataTask = self.session.dataTask(with: urlRequest) { (data, response, error) in
+            if let error = error {
+                print("Request error: ", error)
+                return
+            }
+            
+            guard let response = response as? HTTPURLResponse else { return }
+            
+            if response.statusCode == 200 {
+                guard let data = data else { return }
+                DispatchQueue.main.async {
+                    do {
+                        let pokemonSpecieDetail = try JSONDecoder().decode(PokemonSpecieResponse.self, from: data)
+                        completionHandler(pokemonSpecieDetail, nil)
+                    } catch let error {
+                        completionHandler(nil, error)
+                        print("Error decoding: ", error)
+                    }
+                }
+            }
+        }
+        
+        dataTask.resume()
+    }
+
     func getPokemonMoveDetailByUrl(url: String) -> Observable<PokemonMoveResponse> {
         return Observable<PokemonMoveResponse>.create { observer in
             guard let url = URL(string: url) else {
@@ -165,8 +165,7 @@ struct PokeApiRepository: Repository {
             }
             
             let urlRequest = URLRequest(url: url)
-            
-            let dataTask = URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
+            let dataTask = self.session.dataTask(with: urlRequest) { (data, response, error) in
                 if let error = error {
                     print("Request error: ", error)
                     return
@@ -190,7 +189,7 @@ struct PokeApiRepository: Repository {
             }
             
             dataTask.resume()
-            return Disposables.create {}
+            return Disposables.create()
         }
     }
 }

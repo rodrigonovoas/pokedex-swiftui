@@ -13,6 +13,8 @@ struct DetailView: View {
     @State var pokemon: PokemonDetailResponse
     @StateObject private var viewModel: DetailViewModel = DetailViewModel()
     
+    private let bgColorUtils = BgColorUtils()
+    
     private let pokemonTeamHelper = PokemonTeamHelper()
     
     var body: some View {
@@ -28,7 +30,7 @@ struct DetailView: View {
                 
                 movesView
                 
-                addPokemonToTeamView
+                addPokemonView
             }
             
             if(showCommonDialog) {
@@ -71,7 +73,7 @@ struct DetailView: View {
                             .withNormalTextStyle()
                             .foregroundColor(Color.white)
                             .padding(.init(top: 4, leading: 8, bottom: 4, trailing: 8))
-                            .background(Color(getPokemonTypeBackgroundColor(type: pokemon.types[i].type.name)))
+                            .background(Color(bgColorUtils.getPokemonTypeBackgroundColor(type: pokemon.types[i].type.name)))
                             .cornerRadius(12)
                     }
                 }
@@ -87,10 +89,6 @@ struct DetailView: View {
             .padding(.init(top: 0, leading: 5, bottom: 0, trailing: 5))
         }
     }
-    
-    private func getPokemonTypeBackgroundColor(type: String) -> String {
-        return type + "TypeColor"
-    }
    
     @ViewBuilder
     private var generalInfoView: some View {
@@ -102,12 +100,12 @@ struct DetailView: View {
             VStack {
                 HStack {
                     Text("Weight").withNormalTextStyle()
-                    Text((Double(pokemon.height)/10).description + " m").withNormalTextStyle()
+                    Text((Double(pokemon.weight)/10).description + "0 kg").withNormalTextStyle()
                 }
                 
                 HStack {
                     Text("Height").withNormalTextStyle()
-                    Text((Double(pokemon.height)/10).description + " m").withNormalTextStyle()
+                    Text((Double(pokemon.height)/10).description + "0 m").withNormalTextStyle()
                 }
             }
             .padding()
@@ -179,7 +177,7 @@ struct DetailView: View {
     }
     
     @ViewBuilder
-    private var addPokemonToTeamView: some View {
+    private var addPokemonView: some View {
         HStack {
             Text("Add to your team")
             Image("ic_team")
@@ -192,7 +190,7 @@ struct DetailView: View {
         )
         .cornerRadius(12)
         .onTapGesture {
-            let teamIsNotFull = self.pokemonTeamHelper.addPokemonToTeamList(pokemonName: self.pokemon.name, pokemonImage: self.pokemon.sprites.front_default)
+            let teamIsNotFull = self.pokemonTeamHelper.addPokemonToList(pokemonName: self.pokemon.name, pokemonImage: self.pokemon.sprites.front_default)
             
             showUiMessageAfterAddingPokemon(addingStatus: teamIsNotFull)
         }

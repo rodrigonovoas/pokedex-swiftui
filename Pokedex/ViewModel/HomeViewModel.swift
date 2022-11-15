@@ -10,11 +10,10 @@ import RxSwift
 
 public class HomeViewModel: ObservableObject {
     @Published var pokemonHomeList: [PokemonDetailResponse] = []
-    @Published  var activateSearchbar: Bool = false
-    @Published  var showNotFoundMessage: Bool = false
+    @Published var activateSearchbar: Bool = false
+    @Published var showNotFoundMessage: Bool = false
     
     private var from: Int = 0
-    private var disableRequest = false
     private var repository: PokeApiRepository
     
     private var pokemons: Observable<[PokemonResponse]>?
@@ -25,7 +24,7 @@ public class HomeViewModel: ObservableObject {
         repository = PokeApiRepository(session: URLSession.shared)
     }
     
-    func getFromNumber() -> Int {
+    func getFromIndex() -> Int {
         return from
     }
     
@@ -35,7 +34,10 @@ public class HomeViewModel: ObservableObject {
         self.from = from
         
         pokemons = repository.getPokemonList(from: from)
-        
+        pokemonsSubscriber()
+    }
+    
+    private func pokemonsSubscriber(){
         pokemons?.subscribe(onNext: { [weak self] (list) in
             for i in 0...(list.count-1) {
                 if(i == -1) { return }
@@ -46,22 +48,24 @@ public class HomeViewModel: ObservableObject {
     }
     
     private func addPokemonDetailToList(list: [PokemonResponse], i: Int) {
-        var pokeDetail: Observable<PokemonDetailResponse>?
         pokeDetail = repository.getPokemonDetailByUrl(url: list[i].url)
-        
+        pokemonDetailSubscriber(url: list[i].url, itemsNumber: list.count, pokeDetail: pokeDetail)
+    }
+    
+    private func pokemonDetailSubscriber(url: String, itemsNumber: Int, pokeDetail: Observable<PokemonDetailResponse>?){
         pokeDetail?.subscribe(onNext: { [weak self] (detail) in
             self?.pokemonHomeList.append(detail)
-            self?.repository.getPokemonDetailByUrl(url: list[i].url)
+            self?.repository.getPokemonDetailByUrl(url: url)
             
-            if(self?.pokemonHomeList.count == list.count){
+            if(self?.pokemonHomeList.count == itemsNumber){
                 self?.pokemonHomeList.sort(by: { $0.order < $1.order })
             }
         })
-        .disposed(by: self.disposeBag)
+        .disposed(by: disposeBag)
     }
     
-    func getPokemonByName(name: String) {
-        repository.getPokemonDetailByName(name: name, pokemonDescriptionCompletitionHandler: { pokemonDetail, error in
+    func getPokemonDetailByName(name: String) {
+        repository.getPokemonDetailByName(name: name, completionHandler: { pokemonDetail, error in
             self.pokemonHomeList.removeAll()
             
             if(pokemonDetail == nil) {
@@ -72,11 +76,8 @@ public class HomeViewModel: ObservableObject {
                 return
             }
             
-            if let pokemonDetail = pokemonDetail {
-                self.showNotFoundMessage = false
-                self.pokemonHomeList.append(pokemonDetail)
-            }
-            
+            self.showNotFoundMessage = false
+            self.pokemonHomeList.append(pokemonDetail!)
             self.activateSearchbar = false
         })
     }

@@ -14,6 +14,7 @@ struct HomeView: View {
     @State private var boxNumber: Int = 1
     @State private var showTeam: Bool = false
     
+    private let bgColorUtils = BgColorUtils()
     private let pageNumber = 15
     
     var body: some View {
@@ -73,8 +74,8 @@ struct HomeView: View {
                 .topIconSizeStyle()
                 .padding(.leading, 2)
                 .onTapGesture {
-                    if(viewModel.getFromNumber() >= pageNumber){
-                        viewModel.getPokemonsFromAPI(from: viewModel.getFromNumber() - pageNumber)
+                    if(viewModel.getFromIndex() >= pageNumber){
+                        viewModel.getPokemonsFromAPI(from: viewModel.getFromIndex() - pageNumber)
                         boxNumber -= 1
                     }
                 }
@@ -89,7 +90,7 @@ struct HomeView: View {
                 .topIconSizeStyle()
                 .padding(.trailing, 2)
                 .onTapGesture {
-                    viewModel.getPokemonsFromAPI(from: viewModel.getFromNumber() + pageNumber)
+                    viewModel.getPokemonsFromAPI(from: viewModel.getFromIndex() + pageNumber)
                     boxNumber += 1
                 }
         }
@@ -138,7 +139,7 @@ struct HomeView: View {
                                 .foregroundColor(Color.white)
                                 .padding(.bottom, 2)
                             ,alignment: .bottom)
-                        .background(Color(getPokemonTypeBackgroundColor(type: poke.types[0].type.name)))
+                        .background(Color(bgColorUtils.getPokemonTypeBackgroundColor(type: poke.types[0].type.name)))
                         .cornerRadius(12)
                         .shadow(radius: 1)
                         .padding(5)
@@ -146,10 +147,6 @@ struct HomeView: View {
                 }
             })
         }
-    }
-    
-    private func getPokemonTypeBackgroundColor(type: String) -> String {
-        return type + "TypeColor"
     }
     
     @ViewBuilder

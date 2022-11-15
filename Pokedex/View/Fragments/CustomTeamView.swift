@@ -31,7 +31,6 @@ struct CustomTeamView: View {
                 .zIndex(10)
             
             gridView
-                .cornerRadius(12)
                 .padding(.init(top: 0, leading: 40, bottom: 0, trailing: 40))
             
             bottomMessagesView
@@ -43,7 +42,7 @@ struct CustomTeamView: View {
                   Alert(
                       title: Text("Are you sure you want to remove this pokemon from your team?"),
                       primaryButton: .destructive(Text("Delete")) {
-                          self.pokes = self.pokemonTeamHelper.deletePokemon(pokemonName: self.selectedPokemonToDelete, currentTeam: self.pokes)
+                          self.pokes = self.pokemonTeamHelper.deletePokemonFromList(pokemonName: self.selectedPokemonToDelete, currentTeam: self.pokes)
                       },
                       secondaryButton: .cancel()
                   )
@@ -124,8 +123,7 @@ struct CustomTeamView: View {
                 .background(Color.white)
                 .cornerRadius(12)
         }
-        .padding(.top, 10)
-        .padding(.trailing, 40)
+        .padding(.init(top: 10, leading: 0, bottom: 0, trailing: 40))
     }
 }
 
