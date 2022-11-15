@@ -35,7 +35,7 @@ struct HomeView: View {
                     CustomTeamView(showView: $showTeam)
                 }
             }
-            .navigationBarTitle(Text("Home").font(.subheadline), displayMode: .inline)
+            .navigationBarTitle(Text("Pokedex").font(.subheadline), displayMode: .inline)
             .withGradientBackgroundStyle(startColor: "startBackgroundGradient", endColor: "endBackgroundGradient")
         }.onAppear(){
             viewModel.getPokemonsFromAPI(from: 0)
@@ -71,7 +71,7 @@ struct HomeView: View {
         HStack {
             Image("ic_left_arrow")
                 .topIconSizeStyle()
-                .padding(.leading, 10)
+                .padding(.leading, 2)
                 .onTapGesture {
                     if(viewModel.getFromNumber() >= pageNumber){
                         viewModel.getPokemonsFromAPI(from: viewModel.getFromNumber() - pageNumber)
@@ -80,14 +80,14 @@ struct HomeView: View {
                 }
             
             Text("BOX " + boxNumber.description)
-                .withCustomFont(size: 24)
-                .frame(maxWidth: .infinity, maxHeight: 30)
+                .withCustomFont(size: 34)
+                .frame(maxWidth: .infinity, maxHeight: 40)
                 .background(Rectangle().fill(Color.white).cornerRadius(4))
-                .padding(.init(top: 0, leading: 10, bottom: 0, trailing: 10))
+                .shadow(radius: 1)
             
             Image("ic_right_arrow")
                 .topIconSizeStyle()
-                .padding(.trailing, 10)
+                .padding(.trailing, 2)
                 .onTapGesture {
                     viewModel.getPokemonsFromAPI(from: viewModel.getFromNumber() + pageNumber)
                     boxNumber += 1
@@ -129,15 +129,18 @@ struct HomeView: View {
                                 }
                             }
                             .frame(height: 65)
+                            .shadow(radius: 1)
                         }
                         .padding()
                         .overlay(
                             Text("#\(poke.pokemonId)  \(poke.name.capitalized)")
-                                .withCustomFont(size: 16)
+                                .withCustomFont(size: 20)
                                 .foregroundColor(Color.white)
+                                .padding(.bottom, 2)
                             ,alignment: .bottom)
                         .background(Color(getPokemonTypeBackgroundColor(type: poke.types[0].type.name)))
                         .cornerRadius(12)
+                        .shadow(radius: 1)
                         .padding(5)
                     }
                 }
