@@ -102,12 +102,12 @@ struct DetailView: View {
             VStack {
                 HStack {
                     Text("Weight").withNormalTextStyle()
-                    Text(pokemon.weight.description).withNormalTextStyle()
+                    Text((Double(pokemon.height)/10).description + " m").withNormalTextStyle()
                 }
                 
                 HStack {
                     Text("Height").withNormalTextStyle()
-                    Text(pokemon.height.description).withNormalTextStyle()
+                    Text((Double(pokemon.height)/10).description + " m").withNormalTextStyle()
                 }
             }
             .padding()
