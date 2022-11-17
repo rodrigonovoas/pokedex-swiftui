@@ -1,30 +1,68 @@
-### Overview
+## SwiftUI Pokédex
 
-The main goal of this project is to create a simple Pokedex app with basic functions such as searching pokemons by name and generation, and see their  details (types, abilities, stats...) in another screen, so that the user has the possibility to navigate between the search Screen and the Detail screen.
+The main goal of this project is to reinforce basic concepts about iOS development and have fun developing with SwiftUI (Apple’s latest framework for iOS development).
 
-### Roadmap
+SwiftUI is a powerful framework which provides an easy and intuitive way to create user interfaces via coding instead of the classic drag and drop builder seen in Android with xml and previously in iOS with Storyboards; this goal is achieved thanks a mix between code and view provided by the declarative programming paradigm that accompanies SwiftUI.
 
-For that, I have thought in a path like this one to cover the creation of the entire application:
+In this repository I have created a kind of “Pokédex” application whose main purpose is to show a list of all existing pokémons and some interesting information about them such as their typings, abilities or moves.
 
-THE FIST MOCKUP
+So I coded this app because I like the Pokémon franchise and, also, because it is a good way to take a look at PokeApi API, one of the biggest Pokémon databases right now.
+ 
+Let’s take a look at it.
 
-1) [x] Choose a correct API to retrieve pokémon data (https://pokeapi.co should be enough)
-2) [x] Create a simple screen to retrieve data from API and print it as a grid table
-3) [x] Create a simple detail screen to navigate between the main screen (pokemon list) and this one (pokemon detail)
-4) [x]Mockup done! Now, start applying good practises as good as posible: naming conventions, OOP, repository pattern, follow MVVM architecture to manage data correctly...
+## Database
 
-THE SEARCH SCREEN
+[PokéAPI](https://pokeapi.co/) is a RESTful API which has a huge quantity of data related to Pokémon videogames (it is mainly focused in this media), and consequently, it provides us a way to access some interesting data such as pokemons’ sprites, abilities or stats, among others.
 
-![image](https://user-images.githubusercontent.com/49367885/194107673-5f177ad7-9b53-4354-bffd-875584480fd0.png)
+Its endpoints have a good amount of information stored in JSON format, and it is also supported with good documentation, which is appreciated.
 
-Now, it is convenient to follow a design similar to this one (pokemon battle box): a box full of pokémons to navigate between, with a simple but attractive UI.
+It is also interesting to mention that it is an open source project created in 2014 and updated generation after generation. Therefore, you can also contribute to make it a bigger and even more reliable source :)
 
-To create a box like this one, I could follow a path like this one...
+## Architecture
 
-1) [ ] Replicate the UI in a simple way, dividing it into components: the upper "BOX" toolbar, the table grid showing the pokemons, the background and the bottom buttons. For now, I will add this buttons: a search button, a team button and a OK button, just to give more options to the user. At the end of everything we will polish the design to make it as attractive as possible.
+This application was made with Model-View-ViewModel architecture because it is easy to apply, it has a lot of benefits, and has a good synergy with SwiftUI’s state based way to change views.
 
-2) [ ] From a technical side, create a repository class to retrieve the data from API in a cleaner way.
+To summarize, MVVM is a strategy used to separate our applications in three layers: Model (data and how to get it), View (user interface) and ViewModel (the connector between data and views).
 
-3) [ ] Also see what kind of objects will be necessary to retrieve from the API
+This way we achieve a separation of responsibilities which provides multiple advantages such as an organized way to struct our project, an easier way to read our code, a decouplement of our code and a strategy to make it more testable, which can be translated into a easier to maintain and more robust project.
 
-4) [ ] Create the Viewmodel for the screen, to use it as a bridge between the view and the data, and try to choose a good naming convention for variables and functions.
+![1_SWQ5UQ1XU8wSykwXnWpiNg](https://user-images.githubusercontent.com/49367885/202320477-681c7c14-9bdb-4cae-8d22-2b54c65bff73.png)
+
+## Libraries
+
+Nowadays iOS SDK has enough tools to achieve our goals in an easy way, thanks to libraries like UserDefaults to store local data via key-value strategy (recommended if we are storing small amounts of data), or URLSession to make API calls from different threads (background to prevent locking user’s UI, and main to print our data into views).
+
+## Some strategies used in this project
+
+- Repository Pattern
+
+It is a good way to obtain reusability from our repository via a global class which provides us access to the different services offered from our datasource. It also helps us with code decoupling in the Model layer (which can be translated into an easier way to maintain this layer).
+
+A good way to implement this strategy is to create an interface which will give us flexibility to access our data, because it provides us the possibility to mock data for testing, or change the API without making a huge impact on our project.
+
+Now our project looks like this:
+
+![1_5kNXJ7aFSGJvuh4r4egpTg](https://user-images.githubusercontent.com/49367885/202320651-79982d45-2991-4869-80fb-43f55d854e86.png)
+
+- Singleton Pattern
+
+A design pattern used to get access to objects among the project without the necessity to instantiate them each time.
+
+It gives us more accessibility, better memory management and less code to write.
+
+- Observer Pattern
+
+A design pattern related with SwiftUI’s programming nature and the reactivity from libraries like RxSwift.
+
+Its goal is to use observers to observe variables (data) in a M:1 relation, where observers can observe datasource’s changes without being directly linked with the observed variables, providing flexibility (you can change observables and it won't affect to the observed data) and helping mobile architectures in view-controller decoupling.
+
+- SOLID principles
+
+SOLID principles are key concepts to apply good practices in our projects, making them more easy to maintain and improving their scalability.
+
+Some of the principles applied in this project:
+  - Single Responsibility (S): This principle is tightly tied to our project’s architecture, since its goal is to separate our project in layers which have their own responsibility, making our code better structured and easier to maintain.
+  - Dependency Inversion (D): We apply this principle when we use the Repository interface to access our datasource; this interface gives us flexibility when we need to get data from external resources, since it provides us what we want to get, but not how to get it.
+
+If you want to learn more about SOLID principles, [check this article](https://www.baeldung.com/solid-principles) or [watch this video](https://youtu.be/t8VTLxMsufU)
+
