@@ -1,3 +1,6 @@
+<img width="300px" src="https://user-images.githubusercontent.com/49367885/202322769-654e653c-25a5-4aef-9ca7-5287aac79aa3.png"> <img width="300px" src="https://user-images.githubusercontent.com/49367885/202322787-c2eaa318-c6bb-41ee-b090-4f83ae367166.png"> <img width="300px" src="https://user-images.githubusercontent.com/49367885/202323542-ca32a72a-70e9-4f8f-a7f9-546ff0413607.png">
+
+
 ## SwiftUI Pokédex
 
 The main goal of this project is to reinforce basic concepts about iOS development and have fun developing with SwiftUI (Apple’s latest framework for iOS development).
