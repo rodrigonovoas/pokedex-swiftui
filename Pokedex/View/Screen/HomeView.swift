@@ -84,7 +84,6 @@ struct HomeView: View {
                 .withCustomFont(size: 34)
                 .frame(maxWidth: .infinity, maxHeight: 40)
                 .background(Rectangle().fill(Color.white).cornerRadius(4))
-                .shadow(radius: 1)
             
             Image("ic_right_arrow")
                 .topIconSizeStyle()
@@ -130,7 +129,6 @@ struct HomeView: View {
                                 }
                             }
                             .frame(height: 65)
-                            .shadow(radius: 1)
                         }
                         .padding()
                         .overlay(
@@ -141,7 +139,7 @@ struct HomeView: View {
                             ,alignment: .bottom)
                         .background(Color(bgColorUtils.getPokemonTypeBackgroundColor(type: poke.types[0].type.name)))
                         .cornerRadius(12)
-                        .shadow(radius: 1)
+
                         .padding(5)
                     }
                 }
