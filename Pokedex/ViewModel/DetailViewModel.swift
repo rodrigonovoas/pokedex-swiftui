@@ -7,25 +7,26 @@
 
 import Foundation
 import RxSwift
+import Dependiject
 
 public class DetailViewModel: ObservableObject  {
     @Published var description = ""
     @Published var moves:[Move] = []
     
-    private var repository: PokeApiRepository
-    private var textUtils: TextUtils = TextUtils()
+    private let repository: PokeApiRepository
+    
+    init(repository: PokeApiRepository){
+        self.repository = repository
+    }
+    
+    
     private var pokemonMoves: Observable<PokemonMoveResponse>?
     private let disposeBag = DisposeBag()
-    
-    
-    init(){
-        repository = PokeApiRepository(session: URLSession.shared)
-    }
     
     func getPokemonDescriptionFromAPI(endpoint: String) {
         repository.getPokemonDescription(endpoint: endpoint, completionHandler: { pokemonSpecieResponse, error in
             if let pokemonSpecieResponse = pokemonSpecieResponse {
-                self.description = self.textUtils.removeBlankSpacesFromText(description: pokemonSpecieResponse.flavor_text_entries[0].flavor_text)
+                self.description = TextUtils.removeBlankSpacesFromText(description: pokemonSpecieResponse.flavor_text_entries[0].flavor_text)
             }
         })
     }

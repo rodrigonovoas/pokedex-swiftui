@@ -6,16 +6,15 @@
 //
 
 import SwiftUI
+import Dependiject
 
 struct DetailView: View {
     @State private var uiMessage: String = ""
     @State private var showCommonDialog: Bool = false
     @State var pokemon: PokemonDetailResponse
-    @StateObject private var viewModel: DetailViewModel = DetailViewModel()
     
-    private let bgColorUtils = BgColorUtils()
-    
-    private let pokemonTeamHelper = PokemonTeamHelper()
+    @StateObject private var viewModel: DetailViewModel = Factory.shared.resolve(DetailViewModel.self)
+    private let pokemonTeamHelper = Factory.shared.resolve(PokemonTeamHelper.self)
     
     var body: some View {
         ZStack(alignment: .center) {
@@ -73,7 +72,7 @@ struct DetailView: View {
                             .withNormalTextStyle()
                             .foregroundColor(Color.white)
                             .padding(.init(top: 4, leading: 8, bottom: 4, trailing: 8))
-                            .background(Color(bgColorUtils.getPokemonTypeBackgroundColor(type: pokemon.types[i].type.name)))
+                            .background(Color(BgColorUtils.getPokemonTypeBackgroundColor(type: pokemon.types[i].type.name)))
                             .cornerRadius(12)
                     }
                 }

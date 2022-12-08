@@ -15,6 +15,8 @@
 		2130DBA128E383CE0005859A /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2130DBA028E383CE0005859A /* DetailView.swift */; };
 		2130DBA428E395E10005859A /* PokeApiModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2130DBA328E395E10005859A /* PokeApiModel.swift */; };
 		2155628E2916BB9F00AB42F3 /* RoundedCorner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2155628D2916BB9F00AB42F3 /* RoundedCorner.swift */; };
+		2155AD882942077A009BF598 /* Dependiject in Frameworks */ = {isa = PBXBuildFile; productRef = 2155AD872942077A009BF598 /* Dependiject */; };
+		2155AD8A294207FE009BF598 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2155AD89294207FE009BF598 /* AppDelegate.swift */; };
 		2156977628F4A4570037B18D /* DetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2156977528F4A4570037B18D /* DetailViewModel.swift */; };
 		2156977928F4A4F70037B18D /* TextUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2156977828F4A4F70037B18D /* TextUtils.swift */; };
 		2156BBE5290DA9A100A73BB4 /* MovesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2156BBE4290DA9A100A73BB4 /* MovesView.swift */; };
@@ -43,6 +45,7 @@
 		2130DBA028E383CE0005859A /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
 		2130DBA328E395E10005859A /* PokeApiModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokeApiModel.swift; sourceTree = "<group>"; };
 		2155628D2916BB9F00AB42F3 /* RoundedCorner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedCorner.swift; sourceTree = "<group>"; };
+		2155AD89294207FE009BF598 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2156977528F4A4570037B18D /* DetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewModel.swift; sourceTree = "<group>"; };
 		2156977828F4A4F70037B18D /* TextUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextUtils.swift; sourceTree = "<group>"; };
 		2156BBE4290DA9A100A73BB4 /* MovesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovesView.swift; sourceTree = "<group>"; };
@@ -66,6 +69,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2173A87228F83F1C0076F7D5 /* RxSwift in Frameworks */,
+				2155AD882942077A009BF598 /* Dependiject in Frameworks */,
 				2173A87728F8ADFB0076F7D5 /* FLAnimatedImage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -104,6 +108,7 @@
 				211F986128E09A3D00028718 /* PokedexApp.swift */,
 				211F986528E09A3F00028718 /* Assets.xcassets */,
 				211F986728E09A3F00028718 /* Preview Content */,
+				2155AD89294207FE009BF598 /* AppDelegate.swift */,
 			);
 			path = Pokedex;
 			sourceTree = "<group>";
@@ -242,6 +247,7 @@
 			packageProductDependencies = (
 				2173A87128F83F1C0076F7D5 /* RxSwift */,
 				2173A87628F8ADFB0076F7D5 /* FLAnimatedImage */,
+				2155AD872942077A009BF598 /* Dependiject */,
 			);
 			productName = Pokedex;
 			productReference = 211F985E28E09A3D00028718 /* Pokedex.app */;
@@ -274,6 +280,7 @@
 			packageReferences = (
 				2173A87028F83F1C0076F7D5 /* XCRemoteSwiftPackageReference "RxSwift" */,
 				2173A87528F8ADFB0076F7D5 /* XCRemoteSwiftPackageReference "FLAnimatedImage" */,
+				2155AD862942077A009BF598 /* XCRemoteSwiftPackageReference "Dependiject" */,
 			);
 			productRefGroup = 211F985F28E09A3D00028718 /* Products */;
 			projectDirPath = "";
@@ -310,6 +317,7 @@
 				2173A86728F6E06E0076F7D5 /* PokeApiRepository.swift in Sources */,
 				2130DBA128E383CE0005859A /* DetailView.swift in Sources */,
 				2191892E290D32900042C0BB /* CommonDialogView.swift in Sources */,
+				2155AD8A294207FE009BF598 /* AppDelegate.swift in Sources */,
 				212954C328F49C41003CBFE7 /* HomeViewModel.swift in Sources */,
 				217878D928F95328005F3C79 /* SearchbarView.swift in Sources */,
 				217C6ED429244DD100514A09 /* Move.swift in Sources */,
@@ -527,6 +535,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		2155AD862942077A009BF598 /* XCRemoteSwiftPackageReference "Dependiject" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Tiny-Home-Consulting/Dependiject";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.3.0;
+			};
+		};
 		2173A87028F83F1C0076F7D5 /* XCRemoteSwiftPackageReference "RxSwift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ReactiveX/RxSwift";
@@ -546,6 +562,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		2155AD872942077A009BF598 /* Dependiject */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2155AD862942077A009BF598 /* XCRemoteSwiftPackageReference "Dependiject" */;
+			productName = Dependiject;
+		};
 		2173A87128F83F1C0076F7D5 /* RxSwift */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 2173A87028F83F1C0076F7D5 /* XCRemoteSwiftPackageReference "RxSwift" */;

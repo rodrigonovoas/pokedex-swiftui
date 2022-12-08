@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import Dependiject
 
 public struct PokemonTeam: Identifiable, Codable {
     public var id = UUID()
@@ -20,7 +21,7 @@ struct CustomTeamView: View {
     @State private var showDeleteAlert = false
     @State private var selectedPokemonToDelete: String = ""
     
-    private let pokemonTeamHelper = PokemonTeamHelper()
+    private let pokemonTeamHelper = Factory.shared.resolve(PokemonTeamHelper.self)
 
     var body: some View {
         VStack(spacing: 0) {

@@ -10,8 +10,6 @@ import SwiftUI
 struct MovesView: View {
     @State var moves: [Move] = []
     
-    private let bgColorUtils = BgColorUtils()
-    
     var body: some View {
         Text("Moves").bold().font(.system(size: 26))
         
@@ -36,7 +34,7 @@ struct MovesView: View {
                         .padding(.top, 2)
                 }
                 .padding(.init(top: 10, leading: 20, bottom: 20, trailing: 20))
-                .withRoundedCornersAndFullWidthStyle(backgroundColor: Color(bgColorUtils.getPokemonTypeBackgroundColor(type: moves[i].type)))
+                .withRoundedCornersAndFullWidthStyle(backgroundColor: Color(BgColorUtils.getPokemonTypeBackgroundColor(type: moves[i].type)))
                 .shadow(radius: 2)
                 .padding(.init(top: 0, leading: 10, bottom: 0, trailing: 10))
             }

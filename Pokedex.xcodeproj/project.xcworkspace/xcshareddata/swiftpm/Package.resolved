@@ -1,6 +1,15 @@
 {
   "pins" : [
     {
+      "identity" : "dependiject",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Tiny-Home-Consulting/Dependiject",
+      "state" : {
+        "revision" : "62023d8bf8793274e2254404a0a1a0c8e851a9bf",
+        "version" : "0.3.0"
+      }
+    },
+    {
       "identity" : "flanimatedimage",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Flipboard/FLAnimatedImage",

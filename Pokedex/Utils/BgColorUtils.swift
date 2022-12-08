@@ -8,7 +8,7 @@
 import Foundation
 
 public class BgColorUtils {
-    func getPokemonTypeBackgroundColor(type: String) -> String {
+    public static func getPokemonTypeBackgroundColor(type: String) -> String {
         return type + "TypeColor"
     }
 }

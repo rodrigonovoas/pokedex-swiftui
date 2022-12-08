@@ -7,6 +7,7 @@
 
 import Foundation
 import RxSwift
+import Dependiject
 
 public class HomeViewModel: ObservableObject {
     @Published var pokemonHomeList: [PokemonDetailResponse] = []
@@ -14,14 +15,14 @@ public class HomeViewModel: ObservableObject {
     @Published var showNotFoundMessage: Bool = false
     
     private var from: Int = 0
-    private var repository: PokeApiRepository
+    private let repository: PokeApiRepository
     
     private var pokemons: Observable<[PokemonResponse]>?
     private var pokeDetail: Observable<PokemonDetailResponse>?
     private let disposeBag = DisposeBag()
     
-    init() {
-        repository = PokeApiRepository(session: URLSession.shared)
+    init(repository: PokeApiRepository){
+        self.repository = repository
     }
     
     func getFromIndex() -> Int {

@@ -7,14 +7,14 @@
 
 import SwiftUI
 import FLAnimatedImage
+import Dependiject
 
 struct HomeView: View {
-    @ObservedObject private var viewModel: HomeViewModel
+    @ObservedObject private var viewModel: HomeViewModel = Factory.shared.resolve(HomeViewModel.self)
     @State private var searchedPokemon: String
     @State private var boxNumber: Int = 1
     @State private var showTeam: Bool = false
     
-    private let bgColorUtils = BgColorUtils()
     private let pageNumber = 15
     
     var body: some View {
@@ -137,7 +137,7 @@ struct HomeView: View {
                                 .foregroundColor(Color.white)
                                 .padding(.bottom, 2)
                             ,alignment: .bottom)
-                        .background(Color(bgColorUtils.getPokemonTypeBackgroundColor(type: poke.types[0].type.name)))
+                        .background(Color(BgColorUtils.getPokemonTypeBackgroundColor(type: poke.types[0].type.name)))
                         .cornerRadius(12)
 
                         .padding(5)
@@ -177,7 +177,6 @@ struct HomeView: View {
     
     init() {
         searchedPokemon = ""
-        viewModel = HomeViewModel()
         UINavigationBar.appearance().titleTextAttributes = [.font : UIFont(name: "Pokemon-Pixel-Font", size: 30)!]
     }
 }
