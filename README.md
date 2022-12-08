@@ -59,13 +59,19 @@ A design pattern related with SwiftUI’s programming nature and the reactivity 
 
 Its goal is to use observers to observe variables (data) in a M:1 relation, where observers can observe datasource’s changes without being directly linked with the observed variables, providing flexibility (you can change observables and it won't affect to the observed data) and helping mobile architectures in view-controller decoupling.
 
+- Dependency Injection Pattern
+
+This technique helps us with objects instantiation, reducing the boilerplate from class instances; in consequence, it reduces time by adding the required objects to our classes automatically, after a simple setup from our injector. 
+It is also a good tool to test our classes, and this pattern contributes to the Dependency Inversion principle.
+
 - SOLID principles
 
 SOLID principles are key concepts to apply good practices in our projects, making them more easy to maintain and improving their scalability.
 
 Some of the principles applied in this project:
   - Single Responsibility (S): This principle is tightly tied to our project’s architecture, since its goal is to separate our project in layers which have their own responsibility, making our code better structured and easier to maintain.
-  - Dependency Inversion (D): We apply this principle when we use the Repository interface to access our datasource; this interface gives us flexibility when we need to get data from external resources, since it provides us what we want to get, but not how to get it.
+  - Dependency Inversion (D): We apply this principle when we use the Repository interface to access our datasource; this interface gives us flexibility when we need to get data from external resources, since it provides us what we want to get, but not how to get it. 
+  It is also reinforced by using Depency Injection principle along the project.
 
 If you want to learn more about SOLID principles, [check this article](https://www.baeldung.com/solid-principles) or [watch this video](https://youtu.be/t8VTLxMsufU)
 
